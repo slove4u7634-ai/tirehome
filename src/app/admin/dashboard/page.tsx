@@ -22,6 +22,9 @@ export default function AdminDashboardPage() {
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState('');
   const [newStatus, setNewStatus] = useState('공지');
+  const [newReviewImg, setNewReviewImg] = useState('');
+  const [newReviewLink, setNewReviewLink] = useState('');
+  const [newReviewDesc, setNewReviewDesc] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
 
   // Product state
@@ -199,8 +202,21 @@ export default function AdminDashboardPage() {
   const handleEditClick = (post: Post) => {
     setEditingId(post.id);
     setNewTitle(post.title);
-    setNewContent((post as any).content || '');
     setNewStatus(post.status);
+    
+    if (type === 'review') {
+      try {
+        const data = JSON.parse((post as any).content || '{}');
+        setNewReviewImg(data.img || '');
+        setNewReviewLink(data.link || '');
+        setNewReviewDesc(data.desc || '');
+      } catch (e) {
+        setNewReviewDesc((post as any).content || '');
+      }
+    } else {
+      setNewContent((post as any).content || '');
+    }
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -230,6 +246,9 @@ export default function AdminDashboardPage() {
     setNewTitle('');
     setNewContent('');
     setNewStatus('공지');
+    setNewReviewImg('');
+    setNewReviewLink('');
+    setNewReviewDesc('');
     
     setEditingProdId(null);
     setNewProdBrand('KUMHO');
@@ -332,23 +351,27 @@ export default function AdminDashboardPage() {
 
     if (!newTitle) return alert('제목을 입력하세요');
     
+    let finalContent = newContent;
+    if (type === 'review') {
+      finalContent = JSON.stringify({ img: newReviewImg, link: newReviewLink, desc: newReviewDesc });
+    }
+    
     if (editingId) {
       await fetch(`/api/posts?id=${editingId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle, content: newContent, status: newStatus })
+        body: JSON.stringify({ title: newTitle, content: finalContent, status: newStatus })
       });
       setEditingId(null);
     } else {
       await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle, content: newContent, type, status: newStatus })
+        body: JSON.stringify({ title: newTitle, content: finalContent, type, status: newStatus })
       });
     }
     
-    setNewTitle('');
-    setNewContent('');
+    handleCancelEdit();
     fetchPosts();
   };
 
@@ -576,6 +599,12 @@ export default function AdminDashboardPage() {
           >
             상품 등록 관리
           </button>
+          <button 
+            onClick={() => { setType('review'); handleCancelEdit(); }}
+            className={`px-4 py-2 font-bold rounded-lg ${type === 'review' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
+          >
+            장착후기 갤러리 관리
+          </button>
         </div>
 
         {/* 새 글 작성 / 상품 등록 폼 */}
@@ -673,6 +702,27 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
               </div>
+            </>
+          ) : type === 'review' ? (
+            <>
+              <input 
+                type="text" placeholder="제목 (예: 마제스티9 장착후기)" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} required
+                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 font-bold text-gray-700 w-full"
+              />
+              <div className="flex gap-4">
+                <input 
+                  type="text" placeholder="썸네일 이미지 URL (필수)" value={newReviewImg} onChange={(e) => setNewReviewImg(e.target.value)} required
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm w-1/2"
+                />
+                <input 
+                  type="text" placeholder="네이버 블로그 링크 URL (필수)" value={newReviewLink} onChange={(e) => setNewReviewLink(e.target.value)} required
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm w-1/2"
+                />
+              </div>
+              <textarea 
+                placeholder="간단한 요약 설명" value={newReviewDesc} onChange={(e) => setNewReviewDesc(e.target.value)} required
+                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 h-24 text-sm w-full"
+              />
             </>
           ) : (
             <>
