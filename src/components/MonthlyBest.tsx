@@ -40,7 +40,7 @@ export default function MonthlyBest() {
             <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
               <div className="aspect-[3/4] bg-white rounded-2xl border-4 border-transparent hover:border-purple-400 overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/30 transition-all duration-300 relative flex flex-col transform group-hover:-translate-y-2">
                 <div className="relative h-[65%] w-full bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
-                  <img src={prod.img} alt={prod.name} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
+                  <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/5 to-transparent pointer-events-none"></div>
                   
                   <div className="absolute top-4 left-4">

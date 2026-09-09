@@ -57,50 +57,48 @@ export default function AdminDashboardPage() {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     
-    if (!confirm(`선택한 ${selectedProdIds.length}개의 상품에 이 이미지들을 상세 설명으로 일괄 덮어쓰기 하시겠습니까?`)) {
+    if (!confirm(`선택한 ${selectedProdIds.length}개의 상품에 ${files.length}개의 이미지를 상세 설명으로 일괄 등록하시겠습니까?`)) {
       e.target.value = '';
       return;
     }
 
     try {
+      alert('이미지 업로드 중입니다. 잠시만 기다려주세요...');
       const fileArray = Array.from(files);
-      const base64Promises = fileArray.map(file => {
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            if (event.target?.result) {
-              resolve(event.target.result as string);
-            } else {
-              reject(new Error("File read failed"));
-            }
-          };
-          reader.onerror = () => reject(new Error("FileReader error"));
-          reader.readAsDataURL(file);
-        });
-      });
+      const uploadedUrls: string[] = [];
+      
+      for (const file of fileArray) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (res.ok) {
+          const data = await res.json();
+          uploadedUrls.push(data.url);
+        }
+      }
 
-      // Wait for all files to be read
-      const base64Images = await Promise.all(base64Promises);
-      const detailImgStr = base64Images.join('\n');
+      if (uploadedUrls.length === 0) throw new Error('업로드된 이미지가 없습니다');
+      const detailImgStr = uploadedUrls.join('\n');
       
       const res = await fetch(`/api/products?id=${selectedProdIds.join(',')}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ detailImg: detailImgStr })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          detailImg: detailImgStr
+        }),
       });
       
-      if (!res.ok) {
-        throw new Error(`서버 응답 오류 (상태 코드: ${res.status}) - 이미지 용량 초과일 수 있습니다.`);
-      }
+      if (!res.ok) throw new Error('Failed to update products');
       
+      alert('일괄 등록이 완료되었습니다.');
       setSelectedProdIds([]);
       fetchProducts();
-      alert(`✅ 성공적으로 ${selectedProdIds.length}개의 상품에 상세 이미지가 일괄 적용되었습니다!`);
-    } catch (error: any) {
-      console.error(error);
-      alert(`❌ 오류 발생: ${error.message}\n이미지 용량이 너무 크거나 처리 중 문제가 발생했습니다.`);
+    } catch (error) {
+      console.error('Bulk update failed', error);
+      alert('일괄 등록 중 오류가 발생했습니다.');
     } finally {
-      // Clear input so same file can be chosen again
       e.target.value = '';
     }
   };
@@ -205,37 +203,46 @@ export default function AdminDashboardPage() {
     setNewProdDetailImg('');
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setNewProdImg(event.target?.result as string);
-    };
-    reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (res.ok) {
+        const data = await res.json();
+        setNewProdImg(data.url);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('이미지 업로드 실패');
+    }
   };
 
-  const handleDetailImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDetailImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     
     const newImages: string[] = [];
-    let loadedCount = 0;
+    for (const file of Array.from(files)) {
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (res.ok) {
+          const data = await res.json();
+          newImages.push(data.url);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
     
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          newImages.push(event.target.result as string);
-        }
-        loadedCount++;
-        if (loadedCount === files.length) {
-          setNewProdDetailImg(prev => prev ? prev + '\n' + newImages.join('\n') : newImages.join('\n'));
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    if (newImages.length > 0) {
+      setNewProdDetailImg(prev => prev ? prev + '\n' + newImages.join('\n') : newImages.join('\n'));
+    }
     
     // Reset file input so same files can be selected again if needed
     e.target.value = '';

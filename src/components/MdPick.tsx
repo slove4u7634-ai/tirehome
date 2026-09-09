@@ -44,7 +44,7 @@ export default function MdPick() {
             <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
               <div className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-orange-500 transition-colors duration-300">
                 <div className="relative h-64 w-full bg-zinc-800/50 flex items-center justify-center p-8 group-hover:bg-zinc-800 transition-colors">
-                  <img src={prod.img} alt={prod.name} className="w-full h-full object-contain mix-blend-screen drop-shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500" />
+                  <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-screen drop-shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500" />
                   <div className="absolute top-4 left-4">
                     <span className="bg-zinc-950 text-orange-500 text-[10px] font-black tracking-widest uppercase px-3 py-1.5 rounded-full border border-orange-500/30">
                       {prod.brand}
