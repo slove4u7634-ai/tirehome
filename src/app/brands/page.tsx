@@ -18,6 +18,8 @@ export default function BrandsPage() {
   const [selectedBrand, setSelectedBrand] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [searchSize, setSearchSize] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const ITEMS_PER_PAGE = 20;
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,6 +38,10 @@ export default function BrandsPage() {
         setIsLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedBrand, selectedCategory, searchSize]);
 
   return (
     <div className="flex-1 bg-gray-50 py-12 md:py-20">
@@ -119,6 +125,9 @@ export default function BrandsPage() {
             });
           }
 
+          const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+          const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
           return (
             <div className="animate-in fade-in slide-in-from-bottom duration-300">
               {/* 상단 필터 및 배너 */}
@@ -142,8 +151,8 @@ export default function BrandsPage() {
                         승용차용
                       </button>
                       <button 
-                        onClick={() => setSelectedCategory("SUV/RV")}
-                        className={`px-4 py-1.5 rounded-full transition-colors ${selectedCategory === "SUV/RV" ? "bg-white text-orange-500 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
+                        onClick={() => setSelectedCategory("SUV용")}
+                        className={`px-4 py-1.5 rounded-full transition-colors ${selectedCategory === "SUV용" ? "bg-white text-orange-500 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
                       >
                         SUV용
                       </button>
@@ -168,9 +177,9 @@ export default function BrandsPage() {
               </div>
 
               {/* 상품 리스트 */}
-              {filteredProducts.length > 0 ? (
+              {paginatedProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
-                  {filteredProducts.map(product => (
+                  {paginatedProducts.map(product => (
                     <a key={product.id} href={`/products/pt-${product.id}`} className="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden relative group hover:shadow-[0_8px_30px_-4px_rgba(249,115,22,0.2)] hover:border-orange-200 transition-all flex flex-col h-full">
                       <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-bl-xl z-10">
                         {brands.find(b => b.eng === product.brand)?.kor || product.brand}
@@ -212,7 +221,39 @@ export default function BrandsPage() {
                 </div>
               ) : (
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
-                  <p className="text-gray-500 font-bold">검색 조건에 맞는 상품이 없습니다.</p>
+                  <p className="text-gray-500 font-bold text-lg mb-2">조건에 맞는 타이어가 없습니다.</p>
+                  <p className="text-gray-400 text-sm">다른 사이즈나 브랜드로 다시 검색해보세요.</p>
+                </div>
+              )}
+              
+              {/* 페이지네이션 */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-12 mb-8">
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    이전
+                  </button>
+                  <div className="flex gap-1 overflow-x-auto max-w-[200px] sm:max-w-none">
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={`w-10 h-10 shrink-0 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${currentPage === i + 1 ? 'bg-orange-500 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    다음
+                  </button>
                 </div>
               )}
             </div>
