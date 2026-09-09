@@ -53,11 +53,16 @@ export default function WeeklyBest() {
                       {prod.name}
                     </h3>
                     <p className="text-xs text-gray-400 font-bold mb-auto">{prod.subtitle || prod.size}</p>
-                    <div className="flex items-end justify-between mt-4">
+                    <div className="flex items-end justify-between mt-auto">
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-gray-400 font-bold line-through mb-0.5">{(prod.price * 10000 * 1.3).toLocaleString()}원</span>
+                        {prod.originalPrice && prod.originalPrice > prod.price && (
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <span className="text-red-500 font-black text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
+                            <span className="text-gray-400 font-medium text-xs line-through">{(prod.originalPrice * 10000).toLocaleString()}원</span>
+                          </div>
+                        )}
                         <div className="flex items-baseline gap-1">
-                          <span className="text-xl font-black text-orange-600">{(prod.price * 10000).toLocaleString()}</span>
+                          <span className="text-xl font-black text-gray-900">{(prod.price * 10000).toLocaleString()}</span>
                           <span className="text-sm font-bold text-gray-600">원~</span>
                         </div>
                       </div>

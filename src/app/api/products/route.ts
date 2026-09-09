@@ -44,7 +44,7 @@ export async function PUT(request: Request) {
 
   // Strip undefined-able fields, only send what's provided
   const updateData: Record<string, any> = {};
-  const fields = ['brand','name','subtitle','tags','size','price','img','detailImg','isWeeklyBest','isMonthly','isMdPick'];
+  const fields = ['brand','name','subtitle','tags','size','price','originalPrice','img','detailImg','isWeeklyBest','isMonthly','isMdPick'];
   for (const f of fields) {
     if (body[f] !== undefined) updateData[f] = body[f];
   }

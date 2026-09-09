@@ -58,11 +58,24 @@ export default function MdPick() {
                   </h3>
                   <p className="text-sm text-zinc-500 font-medium mb-6 line-clamp-2 leading-relaxed">{prod.subtitle || '뛰어난 퍼포먼스와 안정성을 경험해보세요.'}</p>
                   
-                  <div className="flex items-end justify-between pt-5 border-t border-zinc-800">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-black text-white">{(prod.price * 10000).toLocaleString()}</span>
-                      <span className="text-sm font-bold text-zinc-500">원~</span>
+                  <div className="flex items-end justify-between mt-6">
+                    <div className="flex flex-col">
+                      {prod.originalPrice && prod.originalPrice > prod.price && (
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="text-red-500 font-black text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
+                          <span className="text-gray-400 font-medium text-xs line-through">{(prod.originalPrice * 10000).toLocaleString()}원</span>
+                        </div>
+                      )}
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-xl font-black text-white">{(prod.price * 10000).toLocaleString()}</span>
+                        <span className="text-sm font-bold text-gray-400">원~</span>
+                      </div>
                     </div>
+                    <span className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </div>

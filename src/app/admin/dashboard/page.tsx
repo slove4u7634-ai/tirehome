@@ -30,6 +30,7 @@ export default function AdminDashboardPage() {
   const [newProdSubtitle, setNewProdSubtitle] = useState('');
   const [newProdSize, setNewProdSize] = useState('');
   const [newProdPrice, setNewProdPrice] = useState('');
+  const [newProdOriginalPrice, setNewProdOriginalPrice] = useState('');
   const [newProdCategory, setNewProdCategory] = useState('승용차용');
   const [newProdFeatures, setNewProdFeatures] = useState('사계절용');
   const [newProdImg, setNewProdImg] = useState('');
@@ -208,6 +209,7 @@ export default function AdminDashboardPage() {
     setNewProdSubtitle(prod.subtitle || '');
     setNewProdSize(prod.size || '');
     setNewProdPrice(String(prod.price));
+    setNewProdOriginalPrice(prod.originalPrice ? String(prod.originalPrice) : '');
     setNewProdImg(prod.img || '');
     setNewProdDetailImg(prod.detailImg || '');
     
