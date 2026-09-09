@@ -291,10 +291,8 @@ export default function AdminDashboardPage() {
     if (type === 'product') {
       if (!newProdName || !newProdPrice) return alert('상품명과 가격을 입력하세요.');
       
-      let parsedPrice = parseFloat(newProdPrice);
-      if (parsedPrice >= 1000) {
-        parsedPrice = parsedPrice / 10000;
-      }
+      const parsedPrice = parseFloat(newProdPrice);
+      const parsedOriginalPrice = newProdOriginalPrice ? parseFloat(newProdOriginalPrice) : null;
 
       const featuresList = newProdFeatures.split(',').map(t => t.trim()).filter(Boolean);
       const tags = [newProdCategory, ...featuresList];
@@ -305,6 +303,7 @@ export default function AdminDashboardPage() {
         subtitle: newProdSubtitle,
         size: newProdSize,
         price: parsedPrice,
+        originalPrice: parsedOriginalPrice,
         tags,
         img: newProdImg,
         detailImg: newProdDetailImg
@@ -574,12 +573,12 @@ export default function AdminDashboardPage() {
                   <input type="text" value={newProdSize} onChange={(e) => setNewProdSize(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 245/45R18" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">공장도가 (만 단위 - 선택)</label>
-                  <input type="number" step="0.1" value={newProdOriginalPrice} onChange={(e) => setNewProdOriginalPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 19.2" />
+                  <label className="block text-sm font-bold text-gray-700 mb-1">공장도가 (원 단위 - 선택)</label>
+                  <input type="number" step="1" value={newProdOriginalPrice} onChange={(e) => setNewProdOriginalPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 192500" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">판매가 (만 단위)</label>
-                  <input type="number" step="0.1" value={newProdPrice} onChange={(e) => setNewProdPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="13.5" />
+                  <label className="block text-sm font-bold text-gray-700 mb-1">판매가 (원 단위)</label>
+                  <input type="number" step="1" value={newProdPrice} onChange={(e) => setNewProdPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="109000" />
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="block text-sm font-bold text-gray-700">상품 이미지</label>
@@ -837,8 +836,8 @@ export default function AdminDashboardPage() {
                       <td className="p-4 font-bold text-gray-600">{prod.brand}</td>
                       <td className="p-4 font-bold text-gray-900">{prod.name}</td>
                       <td className="p-4 text-sm text-gray-500">{prod.size}</td>
-                      <td className="p-4 text-sm text-center text-gray-400 line-through">{prod.originalPrice ? prod.originalPrice + '만' : '-'}</td>
-                      <td className="p-4 font-bold text-center text-orange-500">{prod.price}만~</td>
+                      <td className="p-4 text-sm text-center text-gray-400 line-through">{prod.originalPrice ? prod.originalPrice.toLocaleString() + '원' : '-'}</td>
+                      <td className="p-4 font-bold text-center text-orange-500">{prod.price ? prod.price.toLocaleString() : 0}원~</td>
                       <td className="p-4 text-center space-x-2">
                         <button 
                           onClick={() => handleProdEditClick(prod)}

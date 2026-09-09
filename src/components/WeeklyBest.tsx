@@ -58,11 +58,11 @@ export default function WeeklyBest() {
                         {prod.originalPrice && prod.originalPrice > prod.price && (
                           <div className="flex items-center gap-1.5 mb-0.5">
                             <span className="text-red-500 font-black text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
-                            <span className="text-gray-400 font-medium text-xs line-through">{(prod.originalPrice * 10000).toLocaleString()}원</span>
+                            <span className="text-gray-400 font-medium text-xs line-through">{prod.originalPrice.toLocaleString()}원</span>
                           </div>
                         )}
                         <div className="flex items-baseline gap-1">
-                          <span className="text-xl font-black text-gray-900">{(prod.price * 10000).toLocaleString()}</span>
+                          <span className="text-xl font-black text-gray-900">{prod.price.toLocaleString()}</span>
                           <span className="text-sm font-bold text-gray-600">원~</span>
                         </div>
                       </div>
