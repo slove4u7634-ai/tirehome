@@ -31,7 +31,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     return <div className="flex-1 bg-white flex items-center justify-center min-h-[500px]">상품을 찾을 수 없습니다.</div>;
   }
 
-  const realPrice = product.price * 10000;
+  const realPrice = product.price;
   const totalPrice = realPrice * quantity + (installType === 'visit' ? 0 : 20000); // 장착점 무료, 배송비 2만원 가산
 
   // 뱃지 색상 매핑
@@ -93,9 +93,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <div className="h-px bg-gray-100 w-full mb-6"></div>
               <div className="flex justify-between items-end">
                 <span className="text-gray-900 font-black text-base">판매가격</span>
-                <div className="text-right">
-                  <span className="text-3xl md:text-4xl font-black text-gray-900">{realPrice.toLocaleString()}</span>
-                  <span className="font-bold text-gray-400 ml-1 text-lg">원</span>
+                <div className="flex flex-col items-end">
+                  {product.originalPrice && product.originalPrice > realPrice && (
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-red-500 font-black text-sm">{Math.round((product.originalPrice - realPrice) / product.originalPrice * 100)}%</span>
+                      <span className="text-gray-400 font-medium text-xs line-through">{product.originalPrice.toLocaleString()}원</span>
+                    </div>
+                  )}
+                  <div className="text-right">
+                    <span className="text-3xl md:text-4xl font-black text-gray-900">{realPrice.toLocaleString()}</span>
+                    <span className="font-bold text-gray-400 ml-1 text-lg">원</span>
+                  </div>
                 </div>
               </div>
             </div>

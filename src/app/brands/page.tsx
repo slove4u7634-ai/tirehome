@@ -189,7 +189,16 @@ export default function BrandsPage() {
                         <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-50 shrink-0">
                           <div>
                             <p className="text-orange-500 font-black text-lg leading-none mb-1">{product.size}</p>
-                            <p className="text-2xl font-black text-gray-900 leading-none">{product.price}<span className="text-sm font-bold text-gray-500 ml-0.5">만~</span></p>
+                            {product.originalPrice && product.originalPrice > product.price && (
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <span className="text-red-500 font-black text-sm">{Math.round((product.originalPrice - product.price) / product.originalPrice * 100)}%</span>
+                                <span className="text-gray-400 font-medium text-xs line-through">{product.originalPrice.toLocaleString()}원</span>
+                              </div>
+                            )}
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-2xl font-black text-gray-900 leading-none">{product.price.toLocaleString()}</span>
+                              <span className="text-sm font-bold text-gray-500 ml-0.5">원~</span>
+                            </div>
                           </div>
                           <button className="w-10 h-10 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
