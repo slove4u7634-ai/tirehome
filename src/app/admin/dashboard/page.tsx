@@ -398,7 +398,7 @@ export default function AdminDashboardPage() {
         const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
         let startIndex = 0;
-        let nameIdx = 0, priceIdx = 1, origPriceIdx = -1, imgIdx = 2, brandIdx = 3, categoryIdx = 5, subtitleIdx = 6, featureIdx = 7, detailImgIdx = 8;
+        let nameIdx = 0, sizeIdx = -1, priceIdx = 1, origPriceIdx = -1, imgIdx = 2, brandIdx = 3, categoryIdx = 5, subtitleIdx = 6, featureIdx = 7, detailImgIdx = 8;
         
         for (let i = 0; i < json.length; i++) {
           const row = json[i] as any[];
@@ -414,6 +414,9 @@ export default function AdminDashboardPage() {
             const nIdx = findIdx(['상품명', '타이어명', '제품명']);
             if (nIdx !== -1) nameIdx = nIdx;
             
+            const szIdx = findIdx(['사이즈', '규격']);
+            if (szIdx !== -1) sizeIdx = szIdx;
+            
             const pIdx = findIdx(['판매가', '가격']);
             if (pIdx !== -1) priceIdx = pIdx;
             
@@ -426,7 +429,7 @@ export default function AdminDashboardPage() {
             const bIdx = findIdx(['브랜드', '제조사']);
             if (bIdx !== -1) brandIdx = bIdx;
             
-            const cIdx = findIdx(['차종', '분류']);
+            const cIdx = findIdx(['차종', '분류', '장착구분']);
             if (cIdx !== -1) categoryIdx = cIdx;
             
             const sIdx = findIdx(['서브타이틀', '부제목', '설명']);
@@ -463,10 +466,18 @@ export default function AdminDashboardPage() {
           const rawFeatures = row[featureIdx] ? String(row[featureIdx]) : '';
           const rawDetailImgStr = row[detailImgIdx] ? String(row[detailImgIdx]) : '';
           
-          const sizeMatch = rawName.match(/\d{3}\/\d{2}[A-Z]*\d{2}/i);
-          const size = sizeMatch ? sizeMatch[0] : '';
+          let size = '';
+          if (sizeIdx !== -1 && row[sizeIdx]) {
+            size = String(row[sizeIdx]).trim();
+          } else {
+            const sizeMatch = rawName.match(/\d{3}\/\d{2}[A-Z]*\d{2}/i);
+            size = sizeMatch ? sizeMatch[0] : '';
+          }
           
-          let name = rawName.replace(rawBrand, '').replace(size, '').trim();
+          let name = rawName;
+          if (sizeIdx === -1) {
+            name = rawName.replace(rawBrand, '').replace(size, '').trim();
+          }
           
           let price = isNaN(rawPrice) ? 0 : rawPrice;
           let originalPrice = isNaN(rawOrigPrice) ? null : rawOrigPrice;
@@ -481,11 +492,12 @@ export default function AdminDashboardPage() {
           const detailImgUrls = rawDetailImgStr.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
           const detailImg = detailImgUrls.join('\n');
           
+          const upperBrand = rawBrand.toUpperCase();
           let brandCode = 'KUMHO';
-          if (rawBrand.includes('한국')) brandCode = 'HANKOOK';
-          else if (rawBrand.includes('넥센')) brandCode = 'NEXEN';
-          else if (rawBrand.includes('미쉐린')) brandCode = 'MICHELIN';
-          else if (rawBrand.includes('콘티넨탈')) brandCode = 'CONTINENTAL';
+          if (upperBrand.includes('한국') || upperBrand.includes('HANKOOK')) brandCode = 'HANKOOK';
+          else if (upperBrand.includes('넥센') || upperBrand.includes('NEXEN')) brandCode = 'NEXEN';
+          else if (upperBrand.includes('미쉐린') || upperBrand.includes('MICHELIN')) brandCode = 'MICHELIN';
+          else if (upperBrand.includes('콘티넨탈') || upperBrand.includes('CONTINENTAL')) brandCode = 'CONTINENTAL';
           
           const featureTags = rawFeatures.split(',').map(t => t.trim()).filter(Boolean);
           
