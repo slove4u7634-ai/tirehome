@@ -837,7 +837,7 @@ export default function AdminDashboardPage() {
                       <td className="p-4 font-bold text-gray-900">{prod.name}</td>
                       <td className="p-4 text-sm text-gray-500">{prod.size}</td>
                       <td className="p-4 text-sm text-center text-gray-500 font-medium">{prod.originalPrice ? prod.originalPrice.toLocaleString() + '원' : '-'}</td>
-                      <td className="p-4 font-bold text-center text-orange-500">{prod.price ? prod.price.toLocaleString() : 0}원~</td>
+                      <td className="p-4 font-bold text-center text-orange-500">{prod.price ? prod.price.toLocaleString() : 0}원</td>
                       <td className="p-4 text-center space-x-2">
                         <button 
                           onClick={() => handleProdEditClick(prod)}

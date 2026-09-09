@@ -197,7 +197,7 @@ export default function BrandsPage() {
                             )}
                             <div className="flex items-baseline gap-1">
                               <span className="text-2xl font-black text-gray-900 leading-none">{product.price.toLocaleString()}</span>
-                              <span className="text-sm font-bold text-gray-500 ml-0.5">원~</span>
+                              <span className="text-sm font-bold text-gray-500 ml-0.5">원</span>
                             </div>
                           </div>
                           <button className="w-10 h-10 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors shrink-0">

@@ -63,7 +63,7 @@ export default function WeeklyBest() {
                         )}
                         <div className="flex items-baseline gap-1">
                           <span className="text-xl font-black text-gray-900">{prod.price.toLocaleString()}</span>
-                          <span className="text-sm font-bold text-gray-600">원~</span>
+                          <span className="text-sm font-bold text-gray-600">원</span>
                         </div>
                       </div>
                     </div>

@@ -68,7 +68,7 @@ export default function MdPick() {
                       )}
                       <div className="flex items-baseline gap-1">
                         <span className="text-xl font-black text-white">{prod.price.toLocaleString()}</span>
-                        <span className="text-sm font-bold text-gray-400">원~</span>
+                        <span className="text-sm font-bold text-gray-400">원</span>
                       </div>
                     </div>
                     <span className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
