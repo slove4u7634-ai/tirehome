@@ -9,7 +9,13 @@ export async function GET() {
     cache: 'no-store',
   });
   const data = await res.json();
-  return NextResponse.json(data);
+  // http 이미지 URL을 https로 자동 변환 (Mixed Content 오류 방지)
+  const fixed = Array.isArray(data) ? data.map((p: any) => ({
+    ...p,
+    img: p.img ? p.img.replace(/^http:\/\//i, 'https://') : p.img,
+    detailImg: p.detailImg ? p.detailImg.replace(/^http:\/\//i, 'https://') : p.detailImg,
+  })) : data;
+  return NextResponse.json(fixed);
 }
 
 export async function POST(request: Request) {
