@@ -41,6 +41,8 @@ export default function AdminDashboardPage() {
   const [searchProdBrand, setSearchProdBrand] = useState('ALL');
   const [searchProdKeyword, setSearchProdKeyword] = useState('');
   const [displayFilter, setDisplayFilter] = useState('ALL'); // ALL, isMonthly, isWeeklyBest, isMdPick
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 20;
   
   // Bulk selection state
   const [selectedProdIds, setSelectedProdIds] = useState<number[]>([]);
@@ -350,6 +352,10 @@ export default function AdminDashboardPage() {
     fetchPosts();
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchProdBrand, searchProdKeyword, displayFilter, activeTab]);
+
   const filteredProducts = products.filter(p => {
     if (displayFilter !== 'ALL' && !p[displayFilter]) return false;
     if (searchProdBrand !== 'ALL' && p.brand !== searchProdBrand) return false;
@@ -368,6 +374,9 @@ export default function AdminDashboardPage() {
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleExcelUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -779,10 +788,10 @@ export default function AdminDashboardPage() {
                     <input 
                       type="checkbox"
                       className="w-4 h-4 cursor-pointer accent-orange-500"
-                      checked={selectedProdIds.length === filteredProducts.length && filteredProducts.length > 0}
+                      checked={selectedProdIds.length === paginatedProducts.length && paginatedProducts.length > 0}
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSelectedProdIds(filteredProducts.map(p => p.id));
+                          setSelectedProdIds(paginatedProducts.map(p => p.id));
                         } else {
                           setSelectedProdIds([]);
                         }
@@ -796,8 +805,8 @@ export default function AdminDashboardPage() {
                     <th className="p-4 font-bold text-gray-600 w-24">브랜드</th>
                     <th className="p-4 font-bold text-gray-600">상품명</th>
                     <th className="p-4 font-bold text-gray-600 w-32">사이즈</th>
-                    <th className="p-4 font-bold text-gray-600 w-24 text-center">공장도가</th>
-                    <th className="p-4 font-bold text-gray-600 w-24 text-center">판매가</th>
+                    <th className="p-4 font-bold text-gray-600 w-32 text-center whitespace-nowrap">공장도가</th>
+                    <th className="p-4 font-bold text-gray-600 w-32 text-center whitespace-nowrap">판매가</th>
                   </>
                 ) : (
                   <>
@@ -811,12 +820,12 @@ export default function AdminDashboardPage() {
             </thead>
             <tbody>
               {type === 'product' ? (
-                filteredProducts.length === 0 ? (
+                paginatedProducts.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="p-8 text-center text-gray-500">검색된 상품이 없습니다.</td>
                   </tr>
                 ) : (
-                  filteredProducts.map((prod) => (
+                  paginatedProducts.map((prod) => (
                     <tr key={prod.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="p-4 text-center">
                         <input 
@@ -836,8 +845,8 @@ export default function AdminDashboardPage() {
                       <td className="p-4 font-bold text-gray-600">{prod.brand}</td>
                       <td className="p-4 font-bold text-gray-900">{prod.name}</td>
                       <td className="p-4 text-sm text-gray-500">{prod.size}</td>
-                      <td className="p-4 text-sm text-center text-gray-500 font-medium">{prod.originalPrice ? prod.originalPrice.toLocaleString() + '원' : '-'}</td>
-                      <td className="p-4 font-bold text-center text-orange-500">{prod.price ? prod.price.toLocaleString() : 0}원</td>
+                      <td className="p-4 text-sm text-center text-gray-500 font-medium whitespace-nowrap">{prod.originalPrice ? prod.originalPrice.toLocaleString() + '원' : '-'}</td>
+                      <td className="p-4 font-bold text-center text-orange-500 whitespace-nowrap">{prod.price ? prod.price.toLocaleString() : 0}원</td>
                       <td className="p-4 text-center space-x-2">
                         <button 
                           onClick={() => handleProdEditClick(prod)}
@@ -891,6 +900,36 @@ export default function AdminDashboardPage() {
               )}
             </tbody>
           </table>
+
+          {type === 'product' && totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 p-6 border-t border-gray-100 bg-white">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 rounded border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                이전
+              </button>
+              <div className="flex gap-1 overflow-x-auto max-w-[200px] md:max-w-none">
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`w-8 h-8 shrink-0 rounded text-sm font-bold flex items-center justify-center transition-colors ${currentPage === i + 1 ? 'bg-orange-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 rounded border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                다음
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
