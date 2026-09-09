@@ -354,7 +354,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchProdBrand, searchProdKeyword, displayFilter, activeTab]);
+  }, [searchProdBrand, searchProdKeyword, displayFilter, type]);
 
   const filteredProducts = products.filter(p => {
     if (displayFilter !== 'ALL' && !p[displayFilter]) return false;
