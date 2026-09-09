@@ -574,8 +574,12 @@ export default function AdminDashboardPage() {
                   <input type="text" value={newProdSize} onChange={(e) => setNewProdSize(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 245/45R18" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">가격 (만 단위)</label>
-                  <input type="number" step="0.1" value={newProdPrice} onChange={(e) => setNewProdPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="13.5 (135000 입력시 자동변환)" />
+                  <label className="block text-sm font-bold text-gray-700 mb-1">공장도가 (만 단위 - 선택)</label>
+                  <input type="number" step="0.1" value={newProdOriginalPrice} onChange={(e) => setNewProdOriginalPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 19.2" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">판매가 (만 단위)</label>
+                  <input type="number" step="0.1" value={newProdPrice} onChange={(e) => setNewProdPrice(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="13.5" />
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="block text-sm font-bold text-gray-700">상품 이미지</label>
@@ -793,7 +797,8 @@ export default function AdminDashboardPage() {
                     <th className="p-4 font-bold text-gray-600 w-24">브랜드</th>
                     <th className="p-4 font-bold text-gray-600">상품명</th>
                     <th className="p-4 font-bold text-gray-600 w-32">사이즈</th>
-                    <th className="p-4 font-bold text-gray-600 w-32">가격</th>
+                    <th className="p-4 font-bold text-gray-600 w-24 text-center">공장도가</th>
+                    <th className="p-4 font-bold text-gray-600 w-24 text-center">판매가</th>
                   </>
                 ) : (
                   <>
@@ -809,7 +814,7 @@ export default function AdminDashboardPage() {
               {type === 'product' ? (
                 filteredProducts.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-gray-500">검색된 상품이 없습니다.</td>
+                    <td colSpan={8} className="p-8 text-center text-gray-500">검색된 상품이 없습니다.</td>
                   </tr>
                 ) : (
                   filteredProducts.map((prod) => (
@@ -832,7 +837,8 @@ export default function AdminDashboardPage() {
                       <td className="p-4 font-bold text-gray-600">{prod.brand}</td>
                       <td className="p-4 font-bold text-gray-900">{prod.name}</td>
                       <td className="p-4 text-sm text-gray-500">{prod.size}</td>
-                      <td className="p-4 font-bold text-orange-500">{prod.price}만~</td>
+                      <td className="p-4 text-sm text-center text-gray-400 line-through">{prod.originalPrice ? prod.originalPrice + '만' : '-'}</td>
+                      <td className="p-4 font-bold text-center text-orange-500">{prod.price}만~</td>
                       <td className="p-4 text-center space-x-2">
                         <button 
                           onClick={() => handleProdEditClick(prod)}
