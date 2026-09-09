@@ -38,8 +38,8 @@ export default function MonthlyBest() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {products.map((prod) => (
             <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
-              <div className="aspect-[3/4] bg-white rounded-2xl border-4 border-transparent hover:border-purple-400 overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/30 transition-all duration-300 relative flex flex-col transform group-hover:-translate-y-2">
-                <div className="relative h-[65%] w-full bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
+              <div className="h-full bg-white rounded-2xl border-4 border-transparent hover:border-purple-400 overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/30 transition-all duration-300 relative flex flex-col transform group-hover:-translate-y-2">
+                <div className="relative aspect-square w-full bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
                   <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/5 to-transparent pointer-events-none"></div>
                   

@@ -39,8 +39,8 @@ export default function WeeklyBest() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {bestProducts.map((prod) => (
               <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
-                <div className="aspect-[3/4] bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-300 relative flex flex-col">
-                  <div className="relative h-[65%] w-full bg-gray-50 flex items-center justify-center p-6 group-hover:bg-orange-50 transition-colors">
+                <div className="h-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-300 relative flex flex-col">
+                  <div className="relative aspect-square w-full bg-gray-50 flex items-center justify-center p-6 group-hover:bg-orange-50 transition-colors">
                     <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
                     <div className="absolute top-4 left-4">
                       <span className="bg-white/80 backdrop-blur-sm text-xs font-black px-2.5 py-1 rounded-md shadow-sm text-gray-700 border border-gray-100">
@@ -74,10 +74,10 @@ export default function WeeklyBest() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="aspect-[3/4] bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
-            <div className="aspect-[3/4] bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
-            <div className="aspect-[3/4] bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
-            <div className="aspect-[3/4] bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
+            <div className="h-full bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
+            <div className="h-full bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
+            <div className="h-full bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
+            <div className="h-full bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-sm font-bold text-gray-300">관리자 추천 대기 중</div>
           </div>
         )}
       </div>
