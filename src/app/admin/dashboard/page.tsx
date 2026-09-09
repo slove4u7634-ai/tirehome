@@ -53,6 +53,42 @@ export default function AdminDashboardPage() {
     fetchProducts();
   };
 
+  const handleBulkMainImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    if (!confirm(`선택한 ${selectedProdIds.length}개의 상품의 대표이미지를 일괄 변경하시겠습니까?`)) {
+      e.target.value = '';
+      return;
+    }
+
+    try {
+      alert('대표이미지 업로드 중입니다...');
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('업로드 실패');
+      const data = await res.json();
+      
+      const updateRes = await fetch(`/api/products?id=${selectedProdIds.join(',')}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ img: data.url }),
+      });
+      
+      if (!updateRes.ok) throw new Error('상품 업데이트 실패');
+      
+      alert('대표이미지 일괄 변경이 완료되었습니다.');
+      setSelectedProdIds([]);
+      fetchProducts();
+    } catch (error) {
+      console.error(error);
+      alert('대표이미지 일괄 변경 중 오류가 발생했습니다.');
+    } finally {
+      e.target.value = '';
+    }
+  };
+
   const handleBulkDetailImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -668,8 +704,12 @@ export default function AdminDashboardPage() {
                 >
                   공통 상세이미지 추가(URL)
                 </button>
-                
-                <label className="bg-orange-50 text-orange-600 hover:bg-orange-500 hover:text-white px-3 py-1.5 rounded text-sm font-bold transition-colors cursor-pointer flex items-center mb-0">
+                                <label className="bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white px-3 py-1.5 rounded text-sm font-bold transition-colors cursor-pointer flex items-center mb-0 mr-2">
+                    대표이미지 일괄변경
+                    <input type="file" accept="image/*" onChange={handleBulkMainImageUpload} className="hidden" />
+                  </label>
+                  
+                  <label className="bg-orange-50 text-orange-600 hover:bg-orange-500 hover:text-white px-3 py-1.5 rounded text-sm font-bold transition-colors cursor-pointer flex items-center mb-0">
                   공통 상세이미지 추가(파일)
                   <input type="file" accept="image/*" multiple onChange={handleBulkDetailImageUpload} className="hidden" />
                 </label>
