@@ -52,12 +52,12 @@ export default function MonthlyBest() {
                 
                 <div className="flex-1 p-5 flex flex-col bg-white border-t border-gray-100">
                   <span className="text-[10px] font-bold text-indigo-500 mb-1">{prod.brand}</span>
-                  <h3 className="text-lg font-black text-gray-900 mb-1 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
+                  <h3 className="text-lg font-black text-gray-900 mb-1 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2 min-h-[3.5rem]">
                     {prod.name}
                   </h3>
                   <p className="text-xs text-gray-400 font-bold mb-auto line-clamp-1">{prod.subtitle || prod.size}</p>
                   
-                  <div className="flex items-end justify-between mt-4 pt-4 border-t border-gray-50">
+                  <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-50">
                     <div className="flex flex-col">
                       {prod.originalPrice && prod.originalPrice > prod.price && (
                         <div className="flex items-center gap-1.5 mb-0.5">

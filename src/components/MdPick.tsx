@@ -41,8 +41,8 @@ export default function MdPick() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((prod) => (
-            <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
-              <div className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-orange-500 transition-colors duration-300">
+            <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block h-full">
+              <div className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-orange-500 transition-colors duration-300 h-full flex flex-col">
                 <div className="relative h-64 w-full bg-zinc-800/50 flex items-center justify-center p-8 group-hover:bg-zinc-800 transition-colors">
                   <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-screen drop-shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500" />
                   <div className="absolute top-4 left-4">
@@ -52,13 +52,13 @@ export default function MdPick() {
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <h3 className="text-xl font-black text-white mb-2 leading-tight group-hover:text-orange-400 transition-colors line-clamp-2">
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="text-xl font-black text-white mb-2 leading-tight group-hover:text-orange-400 transition-colors line-clamp-2 min-h-[3.5rem]">
                     {prod.name}
                   </h3>
                   <p className="text-sm text-zinc-500 font-medium mb-6 line-clamp-2 leading-relaxed">{prod.subtitle || '뛰어난 퍼포먼스와 안정성을 경험해보세요.'}</p>
                   
-                  <div className="flex items-end justify-between mt-6">
+                  <div className="flex items-end justify-between mt-auto">
                     <div className="flex flex-col">
                       {prod.originalPrice && prod.originalPrice > prod.price && (
                         <div className="flex items-center gap-1.5 mb-0.5">
