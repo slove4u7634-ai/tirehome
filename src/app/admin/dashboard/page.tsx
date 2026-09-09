@@ -398,10 +398,46 @@ export default function AdminDashboardPage() {
         const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
         let startIndex = 0;
+        let nameIdx = 0, priceIdx = 1, origPriceIdx = -1, imgIdx = 2, brandIdx = 3, categoryIdx = 5, subtitleIdx = 6, featureIdx = 7, detailImgIdx = 8;
+        
         for (let i = 0; i < json.length; i++) {
           const row = json[i] as any[];
-          if (row[0] === '상품명' || (row[3] === '브랜드' && row[5] === '차종')) {
+          if (!row) continue;
+          
+          const strRow = row.map(c => String(c || '').replace(/\s+/g, ''));
+          
+          if (strRow.some(c => c.includes('상품명') || c.includes('타이어명') || c.includes('판매가'))) {
             startIndex = i + 1;
+            
+            const findIdx = (keywords: string[]) => strRow.findIndex(c => keywords.some(k => c.includes(k)));
+            
+            const nIdx = findIdx(['상품명', '타이어명', '제품명']);
+            if (nIdx !== -1) nameIdx = nIdx;
+            
+            const pIdx = findIdx(['판매가', '가격']);
+            if (pIdx !== -1) priceIdx = pIdx;
+            
+            const oIdx = findIdx(['공장도가', '원가', '정가']);
+            if (oIdx !== -1) origPriceIdx = oIdx;
+            
+            const iIdx = findIdx(['상품이미지', '대표이미지', '이미지']);
+            if (iIdx !== -1 && !strRow[iIdx].includes('상세')) imgIdx = iIdx;
+            
+            const bIdx = findIdx(['브랜드', '제조사']);
+            if (bIdx !== -1) brandIdx = bIdx;
+            
+            const cIdx = findIdx(['차종', '분류']);
+            if (cIdx !== -1) categoryIdx = cIdx;
+            
+            const sIdx = findIdx(['서브타이틀', '부제목', '설명']);
+            if (sIdx !== -1) subtitleIdx = sIdx;
+            
+            const fIdx = findIdx(['특징', '태그']);
+            if (fIdx !== -1) featureIdx = fIdx;
+            
+            const dIdx = findIdx(['상세이미지', '상세설명']);
+            if (dIdx !== -1) detailImgIdx = dIdx;
+            
             break;
           }
         }
@@ -411,16 +447,21 @@ export default function AdminDashboardPage() {
         
         for (let i = startIndex; i < json.length; i++) {
           const row = json[i] as any[];
-          if (!row || row.length === 0 || !row[0]) continue;
+          if (!row || row.length === 0 || !row[nameIdx]) continue;
           
-          const rawName = String(row[0]);
-          const rawPrice = parseFloat(row[1]);
-          const rawImgStr = row[2] ? String(row[2]) : '';
-          const rawBrand = row[3] ? String(row[3]) : '금호타이어';
-          const rawCategory = row[5] ? String(row[5]) : '승용차용';
-          const rawSubtitle = row[6] ? String(row[6]) : '';
-          const rawFeatures = row[7] ? String(row[7]) : '';
-          const rawDetailImgStr = row[8] ? String(row[8]) : '';
+          const rawName = String(row[nameIdx]);
+          const rawPriceStr = String(row[priceIdx] || '0').replace(/[^0-9.]/g, '');
+          const rawOrigPriceStr = origPriceIdx !== -1 && row[origPriceIdx] ? String(row[origPriceIdx]).replace(/[^0-9.]/g, '') : '';
+          
+          const rawPrice = parseFloat(rawPriceStr);
+          const rawOrigPrice = parseFloat(rawOrigPriceStr);
+          
+          const rawImgStr = row[imgIdx] ? String(row[imgIdx]) : '';
+          const rawBrand = row[brandIdx] ? String(row[brandIdx]) : '금호타이어';
+          const rawCategory = row[categoryIdx] ? String(row[categoryIdx]) : '승용차용';
+          const rawSubtitle = row[subtitleIdx] ? String(row[subtitleIdx]) : '';
+          const rawFeatures = row[featureIdx] ? String(row[featureIdx]) : '';
+          const rawDetailImgStr = row[detailImgIdx] ? String(row[detailImgIdx]) : '';
           
           const sizeMatch = rawName.match(/\d{3}\/\d{2}[A-Z]*\d{2}/i);
           const size = sizeMatch ? sizeMatch[0] : '';
@@ -428,7 +469,11 @@ export default function AdminDashboardPage() {
           let name = rawName.replace(rawBrand, '').replace(size, '').trim();
           
           let price = isNaN(rawPrice) ? 0 : rawPrice;
-          if (price >= 1000) price = price / 10000;
+          let originalPrice = isNaN(rawOrigPrice) ? null : rawOrigPrice;
+          
+          // If the user uploaded old "만 단위" format (e.g. 19.2), auto convert to 192000
+          if (price > 0 && price < 1000) price = price * 10000;
+          if (originalPrice && originalPrice > 0 && originalPrice < 1000) originalPrice = originalPrice * 10000;
           
           const imgUrls = rawImgStr.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
           const img = imgUrls.length > 0 ? imgUrls[0] : '';
@@ -450,6 +495,7 @@ export default function AdminDashboardPage() {
             subtitle: rawSubtitle,
             size: size,
             price: price,
+            originalPrice: originalPrice,
             tags: [rawCategory, ...featureTags],
             img: img,
             detailImg: detailImg
