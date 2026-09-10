@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const [quantity, setQuantity] = useState(1);
-  const [installType, setInstallType] = useState('visit'); // visit or delivery
   const [product, setProduct] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('info');
@@ -33,7 +32,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   }
 
   const realPrice = product.price;
-  const totalPrice = realPrice * quantity + (installType === 'visit' ? 0 : 20000); // 장착점 무료, 배송비 2만원 가산
 
   // 뱃지 색상 매핑
   const brandKor = product.brand === 'KUMHO' ? '금호타이어' : product.brand === 'HANKOOK' ? '한국타이어' : product.brand === 'NEXEN' ? '넥센타이어' : product.brand;
@@ -120,43 +118,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <button 
-                  onClick={() => setInstallType('visit')}
-                  className={`p-4 rounded-xl font-bold border-2 transition-all text-sm flex flex-col items-center justify-center gap-1 ${installType === 'visit' ? 'border-orange-500 bg-orange-50/50 text-orange-600 shadow-sm' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'}`}
+              <div className="grid grid-cols-1 gap-3">
+                <div 
+                  className={`p-4 rounded-xl font-bold border-2 transition-all text-sm flex flex-col items-center justify-center gap-1 border-orange-500 bg-orange-50/50 text-orange-600 shadow-sm`}
                 >
                   지정 장착점 방문
-                  <span className={`text-xs font-medium ${installType === 'visit' ? 'text-orange-500' : 'text-gray-400'}`}>(무료 장착)</span>
-                </button>
-                <button 
-                  onClick={() => setInstallType('delivery')}
-                  className={`p-4 rounded-xl font-bold border-2 transition-all text-sm flex flex-col items-center justify-center gap-1 ${installType === 'delivery' ? 'border-orange-500 bg-orange-50/50 text-orange-600 shadow-sm' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'}`}
-                >
-                  일반 택배 배송
-                  <span className={`text-xs font-medium ${installType === 'delivery' ? 'text-orange-500' : 'text-gray-400'}`}>(배송비 2만원 추가)</span>
-                </button>
+                  <span className={`text-xs font-medium text-orange-500`}>(무료 장착)</span>
+                </div>
               </div>
             </div>
 
-            {/* 총 결제 금액 */}
-            {(quantity > 1 || installType === 'delivery') && (
-              <div className="flex justify-between items-center bg-gray-50 p-4 rounded-xl mb-6 border border-gray-100">
-                <span className="font-bold text-gray-600 text-sm">총 결제 예상 금액</span>
-                <div>
-                  <span className="text-xl font-black text-orange-500">{totalPrice.toLocaleString()}</span>
-                  <span className="text-gray-500 font-bold ml-1 text-sm">원</span>
-                </div>
-              </div>
-            )}
-
-            {/* 장바구니 / 구매 버튼 */}
+            {/* 방문장착 예약 버튼 */}
             <div className="flex gap-3">
-              <button className="flex-1 py-4 bg-white border border-gray-200 text-gray-900 font-black text-lg rounded-xl shadow-sm hover:bg-gray-50 transition-colors">
-                장바구니
-              </button>
-              <button className="flex-[2] py-4 bg-[#FF4500] text-white font-black text-lg rounded-xl shadow-[0_8px_20px_rgba(255,69,0,0.3)] hover:bg-[#E63E00] hover:shadow-[0_10px_25px_rgba(255,69,0,0.4)] transition-all transform hover:-translate-y-0.5">
-                바로 구매하기
-              </button>
+              <Link href={`/reservation?productId=${product.id}&qty=${quantity}`} className="flex-1 py-4 bg-[#FF4500] text-white text-center font-black text-lg rounded-xl shadow-[0_8px_20px_rgba(255,69,0,0.3)] hover:bg-[#E63E00] hover:shadow-[0_10px_25px_rgba(255,69,0,0.4)] transition-all transform hover:-translate-y-0.5">
+                지정 장착점 방문 예약하기
+              </Link>
             </div>
 
           </div>
