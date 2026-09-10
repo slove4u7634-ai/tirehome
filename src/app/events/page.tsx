@@ -1,7 +1,32 @@
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/events';
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  // SSR fetch for events
+  let events = [...EVENTS_DATA];
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts?type=event`, { next: { revalidate: 0 } });
+    const data = await res.json();
+    if (data && Array.isArray(data) && data.length > 0) {
+      events = data.map((post: any) => {
+        try {
+          const content = JSON.parse(post.content);
+          return {
+            id: String(post.id),
+            title: post.title,
+            date: content.date || post.date,
+            image: content.img || '',
+            content: content.content || ''
+          };
+        } catch {
+          return null;
+        }
+      }).filter(Boolean);
+    }
+  } catch (err) {
+    console.error('Failed to fetch events:', err);
+  }
+
   return (
     <div className="flex-1 bg-white py-12 md:py-20">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1240px]">
@@ -16,7 +41,7 @@ export default function EventsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom duration-700 delay-150">
-          {EVENTS_DATA.map((event) => (
+          {events.map((event) => (
             <Link href={`/events/${event.id}`} key={event.id} className="block rounded-2xl overflow-hidden shadow-md group border border-gray-100 hover:border-orange-500 transition-colors hover:shadow-lg flex flex-col h-full">
               <div className="aspect-[2/1] overflow-hidden bg-gray-50 shrink-0">
                 <img src={event.image} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

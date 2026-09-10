@@ -4,7 +4,27 @@ import { notFound } from 'next/navigation';
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const event = EVENTS_DATA.find(e => e.id === resolvedParams.id);
+  let event = EVENTS_DATA.find(e => e.id === resolvedParams.id);
+  
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts?type=event`, { next: { revalidate: 0 } });
+    const data = await res.json();
+    if (data && Array.isArray(data)) {
+      const dbEvent = data.find((p: any) => String(p.id) === resolvedParams.id);
+      if (dbEvent) {
+        try {
+          const content = JSON.parse(dbEvent.content);
+          event = {
+            id: String(dbEvent.id),
+            title: dbEvent.title,
+            date: content.date || dbEvent.date,
+            image: content.img || '',
+            content: content.content || ''
+          };
+        } catch {}
+      }
+    }
+  } catch (err) {}
 
   if (!event) {
     notFound();

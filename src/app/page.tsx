@@ -8,7 +8,30 @@ import MdPick from '@/components/MdPick';
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/events';
 
-export default function Home() {
+export default async function Home() {
+  let events = [...EVENTS_DATA];
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/posts?type=event`, { next: { revalidate: 0 } });
+    const data = await res.json();
+    if (data && Array.isArray(data) && data.length > 0) {
+      events = data.map((post: any) => {
+        try {
+          const content = JSON.parse(post.content);
+          return {
+            id: String(post.id),
+            title: post.title,
+            date: content.date || post.date,
+            image: content.img || '',
+            content: content.content || ''
+          };
+        } catch {
+          return null;
+        }
+      }).filter(Boolean);
+    }
+  } catch (err) {
+    console.error('Failed to fetch events:', err);
+  }
   return (
     <div className="flex-1 bg-white">
       <div className="w-full relative bg-gray-900 border-none">
@@ -53,7 +76,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex overflow-x-auto gap-4 px-4 pb-4 scrollbar-hide">
-              {EVENTS_DATA.map((event) => (
+              {events.map((event) => (
                 <Link href={`/events/${event.id}`} key={event.id} className="block shrink-0 transition-transform hover:-translate-y-1">
                   <img src={event.image} alt={event.title} className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md border border-gray-100" />
                 </Link>

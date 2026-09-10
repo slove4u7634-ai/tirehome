@@ -25,6 +25,8 @@ export default function AdminDashboardPage() {
   const [newReviewImg, setNewReviewImg] = useState('');
   const [newReviewLink, setNewReviewLink] = useState('');
   const [newReviewDesc, setNewReviewDesc] = useState('');
+  const [newEventImg, setNewEventImg] = useState('');
+  const [newEventDate, setNewEventDate] = useState('');
   const [newBannerTitle1, setNewBannerTitle1] = useState('');
   const [newBannerTitle2, setNewBannerTitle2] = useState('');
   const [newBannerDesc, setNewBannerDesc] = useState('');
@@ -217,6 +219,15 @@ export default function AdminDashboardPage() {
       } catch (e) {
         setNewReviewDesc((post as any).content || '');
       }
+    } else if (type === 'event') {
+      try {
+        const data = JSON.parse((post as any).content || '{}');
+        setNewEventImg(data.img || '');
+        setNewEventDate(data.date || '');
+        setNewContent(data.content || '');
+      } catch (e) {
+        setNewContent((post as any).content || '');
+      }
     } else if (type === 'banner') {
       setNewTitle(post.title || '배너');
       try {
@@ -264,6 +275,8 @@ export default function AdminDashboardPage() {
     setNewReviewImg('');
     setNewReviewLink('');
     setNewReviewDesc('');
+    setNewEventImg('');
+    setNewEventDate('');
     setNewBannerImg('');
     setNewBannerTitle1('');
     setNewBannerTitle2('');
@@ -375,6 +388,8 @@ export default function AdminDashboardPage() {
 
     if (type === 'review') {
       finalContent = JSON.stringify({ img: newReviewImg, link: newReviewLink, desc: newReviewDesc });
+    } else if (type === 'event') {
+      finalContent = JSON.stringify({ img: newEventImg, date: newEventDate, content: newContent });
     } else if (type === 'banner') {
       finalTitle = newBannerTitle1 || '메인 배너';
       finalContent = JSON.stringify({ img: newBannerImg, title1: newBannerTitle1, title2: newBannerTitle2, desc: newBannerDesc });
@@ -604,7 +619,7 @@ export default function AdminDashboardPage() {
           </button>
         </div>
 
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-4 mb-6 flex-wrap">
           <button 
             onClick={() => { setType('notice'); handleCancelEdit(); }}
             className={`px-4 py-2 font-bold rounded-lg ${type === 'notice' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
@@ -628,6 +643,12 @@ export default function AdminDashboardPage() {
             className={`px-4 py-2 font-bold rounded-lg ${type === 'review' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
           >
             장착후기 관리
+          </button>
+          <button 
+            onClick={() => { setType('event'); handleCancelEdit(); }}
+            className={`px-4 py-2 font-bold rounded-lg ${type === 'event' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
+          >
+            이벤트 관리
           </button>
           <button 
             onClick={() => { setType('banner'); handleCancelEdit(); }}
@@ -779,6 +800,60 @@ export default function AdminDashboardPage() {
               <textarea 
                 placeholder="간단한 요약 설명" value={newReviewDesc} onChange={(e) => setNewReviewDesc(e.target.value)} required
                 className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 h-24 text-sm w-full"
+              />
+            </>
+          ) : type === 'event' ? (
+            <>
+              <div className="flex gap-4 items-end mb-2">
+                <div className="flex-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">이벤트 제목</label>
+                  <input 
+                    type="text" placeholder="예: 미쉐린 타이어 4본 구매 시 주유권 증정!" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} required
+                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 font-bold text-gray-700 w-full"
+                  />
+                </div>
+                <div className="w-64">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">이벤트 기간</label>
+                  <input 
+                    type="text" placeholder="예: 2026.09.01 ~ 2026.09.30" value={newEventDate} onChange={(e) => setNewEventDate(e.target.value)} required
+                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm w-full"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex gap-2 w-full">
+                  <input 
+                    type="text" placeholder="이벤트 배너 이미지 URL (가로형 고해상도 권장)" value={newEventImg} onChange={(e) => setNewEventImg(e.target.value)} required
+                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm"
+                  />
+                  <label className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg cursor-pointer transition-colors text-sm flex items-center justify-center shrink-0">
+                    <span>이미지 업로드</span>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        try {
+                          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setNewEventImg(data.url);
+                          }
+                        } catch (err) {
+                          alert('이미지 업로드 실패');
+                        }
+                      }} 
+                      className="hidden" 
+                    />
+                  </label>
+                </div>
+              </div>
+              <textarea 
+                placeholder="이벤트 상세 내용 (상세페이지에 노출될 본문)" value={newContent} onChange={(e) => setNewContent(e.target.value)} required
+                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 h-32 text-sm w-full mt-2"
               />
             </>
           ) : type === 'banner' ? (
