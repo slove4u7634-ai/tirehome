@@ -258,10 +258,10 @@ export default function BrandsPage() {
 
                       <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
                         <div className="flex items-center gap-1 text-orange-400">
-                          <span>⭐</span> 4.9점
+                          <span>⭐</span> {product.rating || 0}점
                         </div>
                         <div className="flex items-center gap-1">
-                          <span>💬</span> 128
+                          <span>💬</span> {product.reviewCount || 0}
                         </div>
                         <div className="flex items-center gap-2 ml-4">
                           <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded flex items-center gap-1">🚚 무료배송</span>
