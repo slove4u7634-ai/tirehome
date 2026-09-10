@@ -227,15 +227,15 @@ function ReservationForm() {
                 </button>
                 
                 {showCostPopup && (
-                  <div className="absolute top-full left-0 md:left-full md:-ml-32 mt-2 w-72 bg-[#2d2d2d] text-white p-4 rounded shadow-2xl z-50 text-xs border border-gray-700">
+                  <div className="absolute top-full left-0 md:left-full md:-ml-32 mt-2 w-72 bg-gray-900 text-white p-4 rounded shadow-2xl z-50 text-xs border border-gray-800">
                     <div className="flex justify-between items-start mb-1">
                       <div className="flex flex-col gap-2 w-full">
                         <div className="flex justify-between w-full">
-                          <span className="text-gray-100">국산 승용차량</span> 
+                          <span className="text-gray-200">국산 승용차량</span> 
                           <span className="font-bold text-white text-sm">44,000원~66,000원</span>
                         </div>
-                        <div className="flex justify-between w-full border-t border-gray-600 pt-2">
-                          <span className="text-gray-100">수입차</span> 
+                        <div className="flex justify-between w-full border-t border-gray-700 pt-2">
+                          <span className="text-gray-200">수입차</span> 
                           <span className="font-bold text-white text-sm">55,000원~88,000원</span>
                         </div>
                         <p className="text-gray-400 mt-1">(일부 차종별 금액 상이하니 별도 문의)</p>
