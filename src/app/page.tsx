@@ -27,7 +27,7 @@ export default async function Home() {
         } catch {
           return null;
         }
-      }).filter(Boolean);
+      }).filter(Boolean) as any;
     }
   } catch (err) {
     console.error('Failed to fetch events:', err);
