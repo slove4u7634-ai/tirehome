@@ -233,7 +233,7 @@ export default function AdminDashboardPage() {
     
     // Split category and features from tags
     const tags = prod.tags || [];
-    const cat = tags.find((t: string) => t === '승용차용' || t === 'SUV용' || t === 'SUV/RV') || '승용차용';
+    const cat = tags.find((t: string) => t === '승용차용' || t === 'SUV용' || t === 'SUV/RV' || t === '전기차용' || t === '승합/화물용') || '승용차용';
     const features = tags.filter((t: string) => t !== cat).join(', ');
     setNewProdCategory(cat);
     setNewProdFeatures(features);
@@ -649,6 +649,7 @@ export default function AdminDashboardPage() {
                   <select value={newProdCategory} onChange={(e) => setNewProdCategory(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500">
                     <option value="승용차용">승용차용</option>
                     <option value="SUV용">SUV용</option>
+                    <option value="전기차용">전기차용</option>
                     <option value="승합/화물용">승합/화물용</option>
                   </select>
                 </div>
