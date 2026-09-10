@@ -102,12 +102,9 @@ export default function SearchForm() {
                 className="w-full p-2.5 md:p-4 bg-gray-50 border border-gray-100 rounded-lg md:rounded-xl font-bold text-gray-800 outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-[11px] md:text-base appearance-none transition-all"
               >
                 <option value="" disabled>단면폭</option>
-                <option value="205">205</option>
-                <option value="225">225</option>
-                <option value="235">235</option>
-                <option value="245">245</option>
-                <option value="255">255</option>
-                <option value="265">265</option>
+                {['145','155','165','175','185','186','195','205','215','225','235','245','255','265','275','285','295','305','315','325','335','345','355','500','550','650','700'].map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
               </select>
               <select 
                 value={sizeR} 
@@ -115,11 +112,9 @@ export default function SearchForm() {
                 className="w-full p-2.5 md:p-4 bg-gray-50 border border-gray-100 rounded-lg md:rounded-xl font-bold text-gray-800 outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-[11px] md:text-base appearance-none transition-all"
               >
                 <option value="" disabled>편평비</option>
-                <option value="40">40</option>
-                <option value="45">45</option>
-                <option value="50">50</option>
-                <option value="55">55</option>
-                <option value="60">60</option>
+                {['25','30','35','40','45','50','55','60','65','70','75','76','80','85'].map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
               </select>
               <select 
                 value={sizeI} 
@@ -127,10 +122,9 @@ export default function SearchForm() {
                 className="w-full p-2.5 md:p-4 bg-gray-50 border border-gray-100 rounded-lg md:rounded-xl font-bold text-gray-800 outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-[11px] md:text-base appearance-none transition-all"
               >
                 <option value="" disabled>인치</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
+                {['12','13','14','15','16','17','18','19','20','21','22','23','24'].map(val => (
+                  <option key={val} value={val}>{val}</option>
+                ))}
               </select>
             </div>
           )}
