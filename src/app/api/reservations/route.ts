@@ -1,14 +1,29 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { supabaseUrl, supabaseHeaders } from '@/lib/supabase';
 
-const dbPath = path.join(process.cwd(), 'src/data/db.json');
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {
-    const fileContents = fs.readFileSync(dbPath, 'utf8');
-    const data = JSON.parse(fileContents);
-    return NextResponse.json(data.reservations || []);
+    const res = await fetch(supabaseUrl('posts', 'select=*&type=eq.reservation&order=id.desc'), {
+      headers: supabaseHeaders,
+      cache: 'no-store',
+    });
+    const data = await res.json();
+    
+    // Convert from Post format to Reservation format
+    const reservations = data.map((post: any) => {
+      let content: any = {};
+      try { content = JSON.parse(post.content); } catch (e) {}
+      return {
+        id: post.id,
+        status: post.status,
+        createdAt: post.date || new Date().toISOString(),
+        ...content
+      };
+    });
+    
+    return NextResponse.json(reservations);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to read database' }, { status: 500 });
   }
@@ -17,28 +32,22 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const fileContents = fs.readFileSync(dbPath, 'utf8');
-    const data = JSON.parse(fileContents);
-
-    if (!data.reservations) {
-      data.reservations = [];
-    }
-
-    const newReservation = {
-      id: Date.now(), // simple auto-increment logic
-      ...body,
-      status: 'pending', // pending, completed, cancelled
-      createdAt: new Date().toISOString()
+    
+    const row = {
+      title: body.customer?.name || '새 방문예약',
+      content: JSON.stringify(body),
+      status: 'pending',
+      type: 'reservation',
+      date: new Date().toISOString()
     };
 
-    data.reservations.unshift(newReservation); // add to top
-    
-    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
-    
-    // We can't really do webpush without a service worker, so we just return the new reservation
-    // The admin dashboard will poll or fetch on load to see the new ones.
-    
-    return NextResponse.json({ success: true, reservation: newReservation });
+    const res = await fetch(supabaseUrl('posts'), {
+      method: 'POST',
+      headers: supabaseHeaders,
+      body: JSON.stringify(row),
+    });
+    const data = await res.json();
+    return NextResponse.json({ success: true, reservation: data?.[0] });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to save reservation' }, { status: 500 });
   }
@@ -47,21 +56,18 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const fileContents = fs.readFileSync(dbPath, 'utf8');
-    const data = JSON.parse(fileContents);
+    
+    const row = {
+      status: body.status
+    };
 
-    if (!data.reservations) {
-      return NextResponse.json({ error: 'No reservations found' }, { status: 404 });
-    }
-
-    const index = data.reservations.findIndex((r: any) => r.id === body.id);
-    if (index > -1) {
-      data.reservations[index] = { ...data.reservations[index], ...body };
-      fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
-      return NextResponse.json({ success: true, reservation: data.reservations[index] });
-    } else {
-      return NextResponse.json({ error: 'Reservation not found' }, { status: 404 });
-    }
+    const res = await fetch(supabaseUrl('posts', `id=eq.${body.id}`), {
+      method: 'PATCH',
+      headers: supabaseHeaders,
+      body: JSON.stringify(row),
+    });
+    const data = await res.json();
+    return NextResponse.json({ success: true, reservation: data?.[0] });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update reservation' }, { status: 500 });
   }
