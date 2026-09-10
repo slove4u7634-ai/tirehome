@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function BrandsPage() {
   const brands = [
@@ -11,26 +12,29 @@ export default function BrandsPage() {
     { eng: "CONTINENTAL", kor: "콘티넨탈" },
     { eng: "BRIDGESTONE", kor: "브리지스톤" },
     { eng: "PIRELLI", kor: "피렐리" },
-    { eng: "DUNLOP", kor: "던롭" },
-    { eng: "GOODYEAR", kor: "굿이어" },
   ];
+
+  const categories = ["승용차용", "SUV용", "전기차용", "승합/화물용"];
+  const features = ["사계절용", "겨울용", "여름용", "스포츠형", "컴포트형", "저소음"];
 
   const [selectedBrand, setSelectedBrand] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const [selectedFeature, setSelectedFeature] = useState<string>("ALL");
   const [searchSize, setSearchSize] = useState<string>("");
+  const [sortOption, setSortOption] = useState<string>("recommend"); // recommend, low_price, high_discount
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ITEMS_PER_PAGE = 20;
+  
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // URL에서 size 파라미터 읽어오기
     const searchParams = new URLSearchParams(window.location.search);
     const sizeParam = searchParams.get('size');
     if (sizeParam) {
       setSearchSize(sizeParam);
     }
-
     fetch('/api/products')
       .then(res => res.json())
       .then(data => {
@@ -41,225 +45,331 @@ export default function BrandsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedBrand, selectedCategory, searchSize]);
+  }, [selectedBrand, selectedCategory, selectedFeature, searchSize, sortOption]);
+
+  let filteredProducts = allProducts;
+  if (selectedBrand !== "ALL") {
+    filteredProducts = filteredProducts.filter(p => p.brand === selectedBrand);
+  }
+  if (selectedCategory !== "ALL") {
+    filteredProducts = filteredProducts.filter(p => p.tags.includes(selectedCategory));
+  }
+  if (selectedFeature !== "ALL") {
+    filteredProducts = filteredProducts.filter(p => p.tags.includes(selectedFeature));
+  }
+  if (searchSize.trim() !== "") {
+    const queryDigits = searchSize.replace(/[^0-9]/g, '');
+    filteredProducts = filteredProducts.filter(p => {
+      const sizeDigits = p.size.replace(/[^0-9]/g, '');
+      if (queryDigits && sizeDigits) {
+        return sizeDigits.includes(queryDigits);
+      }
+      return p.size.toLowerCase().includes(searchSize.toLowerCase());
+    });
+  }
+
+  // Sorting
+  if (sortOption === "low_price") {
+    filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
+  } else if (sortOption === "high_discount") {
+    filteredProducts = [...filteredProducts].sort((a, b) => {
+      const discountA = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) : 0;
+      const discountB = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) : 0;
+      return discountB - discountA;
+    });
+  }
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
-    <div className="flex-1 bg-gray-50 py-12 md:py-20">
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1000px]">
+    <div className="flex-1 bg-white py-8 md:py-12">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1200px]">
         
-        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom duration-700">
-          <p className="text-orange-500 font-bold text-sm tracking-widest uppercase mb-2">Brand Selection</p>
-          <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">브랜드별 타이어 찾기</h1>
-          <p className="text-gray-500 text-sm md:text-base">원하시는 타이어 브랜드를 선택해주세요</p>
+        {/* 상단 통합 검색 바 */}
+        <div className="flex flex-col md:flex-row gap-2 mb-6">
+          <div className="flex-1 flex bg-white border border-gray-300 rounded-lg overflow-hidden">
+            <input 
+              type="text" 
+              value={searchSize}
+              onChange={(e) => setSearchSize(e.target.value)}
+              placeholder="단면폭 / 편평비 / 인치 (예: 245/45R18 또는 2454518)"
+              className="w-full px-4 py-3 outline-none font-bold text-gray-700"
+            />
+          </div>
+          <button className="bg-[#008f7a] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#007a68] transition-colors shrink-0">
+            재검색
+          </button>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 md:p-10 mb-8 animate-in fade-in slide-in-from-bottom duration-700 delay-150">
-          <div className="flex justify-between items-end border-b border-gray-100 pb-4 mb-6">
-            <h2 className="text-lg font-black text-gray-900">브랜드별 찾기</h2>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Brand Category</span>
+        {/* 필터 옵션 영역 */}
+        <div className="border border-gray-200 rounded-xl mb-8">
+          {/* 브랜드 필터 */}
+          <div className="flex flex-col md:flex-row border-b border-gray-100">
+            <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
+              <span className="font-bold text-sm text-[#008f7a]">타이어 브랜드</span>
+            </div>
+            <div className="p-4 flex flex-wrap gap-2 flex-1">
+              <button 
+                onClick={() => setSelectedBrand("ALL")}
+                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === "ALL" ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+              >
+                #전체
+              </button>
+              {brands.map(b => (
+                <button 
+                  key={b.eng}
+                  onClick={() => setSelectedBrand(b.eng)}
+                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === b.eng ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                >
+                  #{b.kor}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* 차종 필터 */}
+          <div className="flex flex-col md:flex-row border-b border-gray-100">
+            <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
+              <span className="font-bold text-sm text-gray-700">차종</span>
+            </div>
+            <div className="p-4 flex flex-wrap gap-2 flex-1">
+              <button 
+                onClick={() => setSelectedCategory("ALL")}
+                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === "ALL" ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+              >
+                #전체
+              </button>
+              {categories.map(c => (
+                <button 
+                  key={c}
+                  onClick={() => setSelectedCategory(c)}
+                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === c ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                >
+                  #{c}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            <button 
-              onClick={() => { setSelectedBrand("ALL"); setSelectedCategory("ALL"); setSearchSize(""); }}
-              className={`flex flex-col items-center justify-center p-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
-                selectedBrand === "ALL" 
-                  ? "bg-orange-500 text-white shadow-orange-500/30" 
-                  : "bg-gray-50 hover:bg-gray-100 text-gray-900 shadow-transparent"
-              }`}
-            >
-              <span className="font-bold text-sm">전체브랜드</span>
-            </button>
-            {brands.map((brand, idx) => {
-              const isSelected = selectedBrand === brand.eng;
-              return (
+          {/* 특장점 필터 */}
+          <div className="flex flex-col md:flex-row">
+            <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
+              <span className="font-bold text-sm text-gray-700">특장점</span>
+            </div>
+            <div className="p-4 flex flex-wrap gap-2 flex-1">
+              <button 
+                onClick={() => setSelectedFeature("ALL")}
+                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === "ALL" ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+              >
+                #전체
+              </button>
+              {features.map(f => (
                 <button 
-                  key={idx} 
-                  onClick={() => { setSelectedBrand(brand.eng); setSelectedCategory("ALL"); setSearchSize(""); }}
-                  className={`flex flex-col items-center justify-center p-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${
-                    isSelected 
-                      ? "bg-orange-500 text-white shadow-orange-500/30" 
-                      : "bg-gray-50 hover:bg-gray-100 text-gray-900 shadow-transparent"
-                  }`}
+                  key={f}
+                  onClick={() => setSelectedFeature(f)}
+                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === f ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
-                  <span className={`text-[10px] font-bold uppercase tracking-wider mb-1 ${isSelected ? "text-orange-200" : "text-gray-400"}`}>
-                    {brand.eng}
-                  </span>
-                  <span className="font-bold text-sm">{brand.kor}</span>
+                  #{f}
                 </button>
-              );
+              ))}
+            </div>
+            <div className="p-4 flex items-center justify-end border-t md:border-t-0 md:border-l border-gray-100">
+              <button 
+                onClick={() => { setSelectedBrand("ALL"); setSelectedCategory("ALL"); setSelectedFeature("ALL"); setSearchSize(""); }}
+                className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-sm font-bold"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                초기화
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 정렬 및 뷰 모드 툴바 */}
+        <div className="flex justify-between items-end border-b-2 border-black pb-3 mb-6">
+          <div className="text-sm text-gray-500 font-bold">
+            총 <span className="text-[#008f7a]">{filteredProducts.length}</span>개의 상품이 있습니다.
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex gap-3 text-sm font-bold">
+              <button onClick={() => setSortOption("low_price")} className={sortOption === 'low_price' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}>낮은 가격순</button>
+              <button onClick={() => setSortOption("high_discount")} className={sortOption === 'high_discount' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}>할인율 높은순</button>
+              <button onClick={() => setSortOption("recommend")} className={sortOption === 'recommend' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}>추천순</button>
+            </div>
+            <div className="w-px h-4 bg-gray-300 mx-2"></div>
+            <div className="flex gap-2">
+              <button onClick={() => setViewMode('grid')} className={viewMode === 'grid' ? 'text-[#008f7a]' : 'text-gray-300 hover:text-gray-500'}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'text-[#008f7a]' : 'text-gray-300 hover:text-gray-500'}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 상품 목록 */}
+        {isLoading ? (
+          <div className="py-20 text-center text-gray-500 font-bold">상품 정보를 불러오는 중입니다...</div>
+        ) : paginatedProducts.length === 0 ? (
+          <div className="py-20 text-center border rounded-xl bg-gray-50">
+            <p className="text-gray-500 font-bold text-lg mb-2">조건에 맞는 타이어가 없습니다.</p>
+            <p className="text-gray-400 text-sm">필터를 초기화하거나 다른 조건으로 다시 검색해보세요.</p>
+          </div>
+        ) : (
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'flex flex-col gap-4'}>
+            {paginatedProducts.map(product => {
+              const brandKor = brands.find(b => b.eng === product.brand)?.kor || product.brand;
+              const discountRate = product.originalPrice && product.originalPrice > product.price 
+                ? Math.round((product.originalPrice - product.price) / product.originalPrice * 100) 
+                : 0;
+
+              if (viewMode === 'list') {
+                return (
+                  <div key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:border-[#008f7a] hover:shadow-lg transition-all p-4 md:p-6 items-center gap-6">
+                    {/* 좌측: 브랜드 로고 및 상품 이미지 */}
+                    <Link href={`/products/pt-${product.id}`} className="w-full md:w-48 shrink-0 flex flex-col items-center justify-center">
+                      <span className="font-black text-gray-800 text-[10px] tracking-wider mb-2 bg-gray-100 px-2 py-0.5 rounded-full">{brandKor}</span>
+                      <img src={product.img} alt={product.name} className="w-32 h-32 md:w-40 md:h-40 object-contain hover:scale-105 transition-transform" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/200?text=Tire'; }} />
+                    </Link>
+                    
+                    {/* 중앙: 스펙 및 해시태그 */}
+                    <div className="flex-1 flex flex-col justify-center w-full">
+                      <Link href={`/products/pt-${product.id}`} className="block group">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-sm font-bold text-gray-500">{product.size}</span>
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-black text-gray-900 group-hover:text-[#008f7a] transition-colors mb-2">{product.name}</h3>
+                        <p className="text-sm font-bold text-gray-500 mb-4">{product.subtitle}</p>
+                      </Link>
+                      
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {Array.from(new Set(product.tags)).map((tag: any, idx: number) => (
+                          <span key={idx} className="text-[11px] font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded">#{tag}</span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
+                        <div className="flex items-center gap-1 text-orange-400">
+                          <span>⭐</span> 4.9점
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span>💬</span> 128
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded flex items-center gap-1">🚚 무료배송</span>
+                          <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded flex items-center gap-1">🔧 무료장착</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 우측: 가격 및 구매 버튼 */}
+                    <div className="w-full md:w-64 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-6 flex flex-col items-end md:justify-center shrink-0">
+                      {discountRate > 0 && (
+                        <div className="flex items-center gap-2 mb-1 w-full justify-end">
+                          <span className="text-red-500 font-black text-sm">{discountRate}%</span>
+                          <span className="text-gray-400 font-medium text-xs line-through">{product.originalPrice.toLocaleString()}원</span>
+                        </div>
+                      )}
+                      <div className="flex items-center gap-1 mb-6 text-[#008f7a]">
+                        <span className="bg-[#008f7a] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">₩</span>
+                        <span className="text-3xl font-black">{product.price.toLocaleString()}</span>
+                        <span className="font-bold">원</span>
+                      </div>
+                      
+                      <div className="flex gap-2 w-full">
+                        <button className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-500 transition-colors shrink-0 bg-white shadow-sm hover:shadow">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                          </svg>
+                        </button>
+                        <button className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#008f7a] hover:border-[#008f7a] transition-colors shrink-0 bg-white shadow-sm hover:shadow">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                          </svg>
+                        </button>
+                        <Link href={`/products/pt-${product.id}`} className="flex-1 bg-white border-2 border-[#008f7a] text-[#008f7a] rounded-lg flex items-center justify-center font-bold hover:bg-[#008f7a] hover:text-white transition-colors shadow-sm hover:shadow">
+                          자세히 보기
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              } else {
+                // 그리드 뷰 렌더링
+                return (
+                  <Link href={`/products/pt-${product.id}`} key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden relative group hover:border-[#008f7a] transition-colors flex flex-col h-full p-4">
+                    <div className="absolute top-0 right-0 bg-gray-100 text-gray-600 text-[10px] font-black px-2 py-1 rounded-bl-lg z-10">
+                      {brandKor}
+                    </div>
+                    <div className="flex justify-center shrink-0 mb-4 h-40">
+                      <img src={product.img} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/200?text=Tire'; }} />
+                    </div>
+                    <div className="flex flex-col flex-grow">
+                      <p className="text-xs text-gray-500 font-bold mb-1 shrink-0">{product.size}</p>
+                      <h3 className="text-base font-black text-gray-900 mb-1 leading-tight group-hover:text-[#008f7a] transition-colors shrink-0 line-clamp-2 min-h-[2.5rem]">{product.name}</h3>
+                      <div className="flex flex-wrap gap-1 mb-4 mt-auto">
+                        {Array.from(new Set(product.tags)).map((tag: any, idx: number) => (
+                          <span key={idx} className="text-[10px] font-bold bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">#{tag}</span>
+                        ))}
+                      </div>
+                      <div className="border-t border-gray-100 pt-3 shrink-0">
+                        {discountRate > 0 && (
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <span className="text-red-500 font-black text-xs">{discountRate}%</span>
+                            <span className="text-gray-400 font-medium text-[10px] line-through">{product.originalPrice.toLocaleString()}원</span>
+                          </div>
+                        )}
+                        <div className="flex items-baseline gap-1 text-[#008f7a]">
+                          <span className="text-xl font-black leading-none">{product.price.toLocaleString()}</span>
+                          <span className="text-xs font-bold ml-0.5">원</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              }
             })}
           </div>
-        </div>
-
-        {(selectedBrand === "ALL" && !searchSize) ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-dashed border-gray-300 p-16 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom duration-300">
-            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 text-gray-300">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
-              </svg>
+        )}
+        
+        {/* 페이지네이션 */}
+        {!isLoading && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-12 mb-8">
+            <button 
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              이전
+            </button>
+            <div className="flex gap-1 overflow-x-auto max-w-[200px] sm:max-w-none">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`w-10 h-10 shrink-0 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${currentPage === i + 1 ? 'bg-[#008f7a] text-white shadow-md border border-[#008f7a]' : 'text-gray-600 border border-transparent hover:bg-gray-100'}`}
+                >
+                  {i + 1}
+                </button>
+              ))}
             </div>
-            <p className="text-gray-500 font-bold">원하시는 브랜드를 선택해주세요.</p>
+            <button 
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              다음
+            </button>
           </div>
-        ) : isLoading ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
-            <p className="text-gray-500 font-bold">상품 정보를 불러오는 중입니다...</p>
-          </div>
-        ) : (() => {
-          let filteredProducts = allProducts;
-          if (selectedBrand !== "ALL") {
-            filteredProducts = filteredProducts.filter(p => p.brand === selectedBrand);
-          }
-          if (selectedCategory !== "ALL") {
-            filteredProducts = filteredProducts.filter(p => p.tags.includes(selectedCategory));
-          }
-          if (searchSize.trim() !== "") {
-            const queryDigits = searchSize.replace(/[^0-9]/g, '');
-            filteredProducts = filteredProducts.filter(p => {
-              const sizeDigits = p.size.replace(/[^0-9]/g, '');
-              // 만약 둘 다 숫자가 남아있다면 숫자로 비교, 아니면 기존 문자열 포함 여부로 비교
-              if (queryDigits && sizeDigits) {
-                return sizeDigits.includes(queryDigits);
-              }
-              return p.size.toLowerCase().includes(searchSize.toLowerCase());
-            });
-          }
-
-          const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-          const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-
-          return (
-            <div className="animate-in fade-in slide-in-from-bottom duration-300">
-              {/* 상단 필터 및 배너 */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 mb-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-4">
-                  <div className="flex items-center gap-4">
-                    <h2 className="text-2xl md:text-3xl font-black text-gray-900">
-                      {selectedBrand === "ALL" ? "전체 타이어 검색결과" : brands.find(b => b.eng === selectedBrand)?.kor}
-                    </h2>
-                    <div className="flex bg-gray-100 rounded-full p-1 text-sm font-bold">
-                      <button 
-                        onClick={() => setSelectedCategory("ALL")}
-                        className={`px-4 py-1.5 rounded-full transition-colors ${selectedCategory === "ALL" ? "bg-white text-orange-500 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-                      >
-                        전체
-                      </button>
-                      <button 
-                        onClick={() => setSelectedCategory("승용차용")}
-                        className={`px-4 py-1.5 rounded-full transition-colors ${selectedCategory === "승용차용" ? "bg-white text-orange-500 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-                      >
-                        승용차용
-                      </button>
-                      <button 
-                        onClick={() => setSelectedCategory("SUV용")}
-                        className={`px-4 py-1.5 rounded-full transition-colors ${selectedCategory === "SUV용" ? "bg-white text-orange-500 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-                      >
-                        SUV용
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="relative">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                      </svg>
-                      <input 
-                        type="text" 
-                        value={searchSize}
-                        onChange={(e) => setSearchSize(e.target.value)}
-                        placeholder="사이즈 입력 (예: 245/45R18)" 
-                        className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 focus:bg-white transition-colors text-sm w-full md:w-64"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-gray-500 text-sm font-medium">{filteredProducts.length}개의 상품이 검색되었습니다.</p>
-              </div>
-
-              {/* 상품 리스트 */}
-              {paginatedProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
-                  {paginatedProducts.map(product => (
-                    <a key={product.id} href={`/products/pt-${product.id}`} className="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden relative group hover:shadow-[0_8px_30px_-4px_rgba(249,115,22,0.2)] hover:border-orange-200 transition-all flex flex-col h-full">
-                      <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-bl-xl z-10">
-                        {brands.find(b => b.eng === product.brand)?.kor || product.brand}
-                      </div>
-                      <div className="p-4 bg-gray-100/50 flex justify-center shrink-0">
-                        <img src={product.img} alt={product.name} className="w-48 h-48 object-contain group-hover:scale-110 transition-transform duration-500" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/200?text=Tire'; }} />
-                      </div>
-                      <div className="p-5 flex flex-col flex-grow">
-                        <h3 className="text-lg font-black text-gray-900 mb-1 leading-tight group-hover:text-orange-500 transition-colors shrink-0 line-clamp-2 min-h-[3rem]">{product.name}</h3>
-                        <p className="text-xs text-gray-400 font-bold mb-3 shrink-0">{product.subtitle}</p>
-                        <div className="flex flex-wrap gap-1 mb-6 shrink-0">
-                          {Array.from(new Set(product.tags)).map((tag: any, idx: number) => (
-                            <span key={idx} className="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{tag}</span>
-                          ))}
-                        </div>
-                        <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-50 shrink-0">
-                          <div>
-                            <p className="text-orange-500 font-black text-lg leading-none mb-1">{product.size}</p>
-                            {product.originalPrice && product.originalPrice > product.price && (
-                              <div className="flex items-center gap-1.5 mb-1">
-                                <span className="text-red-500 font-black text-sm">{Math.round((product.originalPrice - product.price) / product.originalPrice * 100)}%</span>
-                                <span className="text-gray-400 font-medium text-xs line-through">{product.originalPrice.toLocaleString()}원</span>
-                              </div>
-                            )}
-                            <div className="flex items-baseline gap-1">
-                              <span className="text-2xl font-black text-gray-900 leading-none">{product.price.toLocaleString()}</span>
-                              <span className="text-sm font-bold text-gray-500 ml-0.5">원</span>
-                            </div>
-                          </div>
-                          <button className="w-10 h-10 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
-                  <p className="text-gray-500 font-bold text-lg mb-2">조건에 맞는 타이어가 없습니다.</p>
-                  <p className="text-gray-400 text-sm">다른 사이즈나 브랜드로 다시 검색해보세요.</p>
-                </div>
-              )}
-              
-              {/* 페이지네이션 */}
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-12 mb-8">
-                  <button 
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    이전
-                  </button>
-                  <div className="flex gap-1 overflow-x-auto max-w-[200px] sm:max-w-none">
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={`w-10 h-10 shrink-0 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${currentPage === i + 1 ? 'bg-orange-500 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
-                      >
-                        {i + 1}
-                      </button>
-                    ))}
-                  </div>
-                  <button 
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    다음
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })()}
-
+        )}
       </div>
     </div>
   );
