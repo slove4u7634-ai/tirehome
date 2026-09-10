@@ -97,7 +97,7 @@ export default function BrandsPage() {
               className="w-full px-4 py-3 outline-none font-bold text-gray-700"
             />
           </div>
-          <button className="bg-[#008f7a] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#007a68] transition-colors shrink-0">
+          <button className="bg-orange-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-orange-600 transition-colors shrink-0">
             재검색
           </button>
         </div>
@@ -107,12 +107,12 @@ export default function BrandsPage() {
           {/* 브랜드 필터 */}
           <div className="flex flex-col md:flex-row border-b border-gray-100">
             <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
-              <span className="font-bold text-sm text-[#008f7a]">타이어 브랜드</span>
+              <span className="font-bold text-sm text-orange-500">타이어 브랜드</span>
             </div>
             <div className="p-4 flex flex-wrap gap-2 flex-1">
               <button 
                 onClick={() => setSelectedBrand("ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === "ALL" ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
               >
                 #전체
               </button>
@@ -120,7 +120,7 @@ export default function BrandsPage() {
                 <button 
                   key={b.eng}
                   onClick={() => setSelectedBrand(b.eng)}
-                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === b.eng ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === b.eng ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   #{b.kor}
                 </button>
@@ -136,7 +136,7 @@ export default function BrandsPage() {
             <div className="p-4 flex flex-wrap gap-2 flex-1">
               <button 
                 onClick={() => setSelectedCategory("ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === "ALL" ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
               >
                 #전체
               </button>
@@ -144,7 +144,7 @@ export default function BrandsPage() {
                 <button 
                   key={c}
                   onClick={() => setSelectedCategory(c)}
-                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === c ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === c ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   #{c}
                 </button>
@@ -160,7 +160,7 @@ export default function BrandsPage() {
             <div className="p-4 flex flex-wrap gap-2 flex-1">
               <button 
                 onClick={() => setSelectedFeature("ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === "ALL" ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
               >
                 #전체
               </button>
@@ -168,7 +168,7 @@ export default function BrandsPage() {
                 <button 
                   key={f}
                   onClick={() => setSelectedFeature(f)}
-                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === f ? "border-[#008f7a] text-[#008f7a] bg-[#e6f4f2]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === f ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   #{f}
                 </button>
@@ -191,7 +191,7 @@ export default function BrandsPage() {
         {/* 정렬 및 뷰 모드 툴바 */}
         <div className="flex justify-between items-end border-b-2 border-black pb-3 mb-6">
           <div className="text-sm text-gray-500 font-bold">
-            총 <span className="text-[#008f7a]">{filteredProducts.length}</span>개의 상품이 있습니다.
+            총 <span className="text-orange-500">{filteredProducts.length}</span>개의 상품이 있습니다.
           </div>
           <div className="flex items-center gap-4">
             <div className="flex gap-3 text-sm font-bold">
@@ -201,12 +201,12 @@ export default function BrandsPage() {
             </div>
             <div className="w-px h-4 bg-gray-300 mx-2"></div>
             <div className="flex gap-2">
-              <button onClick={() => setViewMode('grid')} className={viewMode === 'grid' ? 'text-[#008f7a]' : 'text-gray-300 hover:text-gray-500'}>
+              <button onClick={() => setViewMode('grid')} className={viewMode === 'grid' ? 'text-orange-500' : 'text-gray-300 hover:text-gray-500'}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                   <path fillRule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clipRule="evenodd" />
                 </svg>
               </button>
-              <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'text-[#008f7a]' : 'text-gray-300 hover:text-gray-500'}>
+              <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'text-orange-500' : 'text-gray-300 hover:text-gray-500'}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                   <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
                 </svg>
@@ -233,7 +233,7 @@ export default function BrandsPage() {
 
               if (viewMode === 'list') {
                 return (
-                  <div key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:border-[#008f7a] hover:shadow-lg transition-all p-4 md:p-6 items-center gap-6">
+                  <div key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:border-orange-500 hover:shadow-lg transition-all p-4 md:p-6 items-center gap-6">
                     {/* 좌측: 브랜드 로고 및 상품 이미지 */}
                     <Link href={`/products/pt-${product.id}`} className="w-full md:w-48 shrink-0 flex flex-col items-center justify-center">
                       <span className="font-black text-gray-800 text-[10px] tracking-wider mb-2 bg-gray-100 px-2 py-0.5 rounded-full">{brandKor}</span>
@@ -244,9 +244,9 @@ export default function BrandsPage() {
                     <div className="flex-1 flex flex-col justify-center w-full">
                       <Link href={`/products/pt-${product.id}`} className="block group">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm font-bold text-gray-500">{product.size}</span>
+                          <span className="text-lg md:text-xl font-black text-gray-700">{product.size}</span>
                         </div>
-                        <h3 className="text-xl md:text-2xl font-black text-gray-900 group-hover:text-[#008f7a] transition-colors mb-2">{product.name}</h3>
+                        <h3 className="text-xl md:text-2xl font-black text-gray-900 group-hover:text-orange-500 transition-colors mb-2">{product.name}</h3>
                         <p className="text-sm font-bold text-gray-500 mb-4">{product.subtitle}</p>
                       </Link>
                       
@@ -278,8 +278,8 @@ export default function BrandsPage() {
                           <span className="text-gray-400 font-medium text-xs line-through">{product.originalPrice.toLocaleString()}원</span>
                         </div>
                       )}
-                      <div className="flex items-center gap-1 mb-6 text-[#008f7a]">
-                        <span className="bg-[#008f7a] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">₩</span>
+                      <div className="flex items-center gap-1 mb-6 text-orange-500">
+                        <span className="bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">₩</span>
                         <span className="text-3xl font-black">{product.price.toLocaleString()}</span>
                         <span className="font-bold">원</span>
                       </div>
@@ -290,12 +290,12 @@ export default function BrandsPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                           </svg>
                         </button>
-                        <button className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#008f7a] hover:border-[#008f7a] transition-colors shrink-0 bg-white shadow-sm hover:shadow">
+                        <button className="w-12 h-12 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-colors shrink-0 bg-white shadow-sm hover:shadow">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                           </svg>
                         </button>
-                        <Link href={`/products/pt-${product.id}`} className="flex-1 bg-white border-2 border-[#008f7a] text-[#008f7a] rounded-lg flex items-center justify-center font-bold hover:bg-[#008f7a] hover:text-white transition-colors shadow-sm hover:shadow">
+                        <Link href={`/products/pt-${product.id}`} className="flex-1 bg-white border-2 border-orange-500 text-orange-500 rounded-lg flex items-center justify-center font-bold hover:bg-orange-500 hover:text-white transition-colors shadow-sm hover:shadow">
                           자세히 보기
                         </Link>
                       </div>
@@ -305,7 +305,7 @@ export default function BrandsPage() {
               } else {
                 // 그리드 뷰 렌더링
                 return (
-                  <Link href={`/products/pt-${product.id}`} key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden relative group hover:border-[#008f7a] transition-colors flex flex-col h-full p-4">
+                  <Link href={`/products/pt-${product.id}`} key={product.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden relative group hover:border-orange-500 transition-colors flex flex-col h-full p-4">
                     <div className="absolute top-0 right-0 bg-gray-100 text-gray-600 text-[10px] font-black px-2 py-1 rounded-bl-lg z-10">
                       {brandKor}
                     </div>
@@ -313,8 +313,8 @@ export default function BrandsPage() {
                       <img src={product.img} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/200?text=Tire'; }} />
                     </div>
                     <div className="flex flex-col flex-grow">
-                      <p className="text-xs text-gray-500 font-bold mb-1 shrink-0">{product.size}</p>
-                      <h3 className="text-base font-black text-gray-900 mb-1 leading-tight group-hover:text-[#008f7a] transition-colors shrink-0 line-clamp-2 min-h-[2.5rem]">{product.name}</h3>
+                      <p className="text-sm font-black text-gray-700 mb-1 shrink-0">{product.size}</p>
+                      <h3 className="text-base font-black text-gray-900 mb-1 leading-tight group-hover:text-orange-500 transition-colors shrink-0 line-clamp-2 min-h-[2.5rem]">{product.name}</h3>
                       <div className="flex flex-wrap gap-1 mb-4 mt-auto">
                         {Array.from(new Set(product.tags)).map((tag: any, idx: number) => (
                           <span key={idx} className="text-[10px] font-bold bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">#{tag}</span>
@@ -327,7 +327,7 @@ export default function BrandsPage() {
                             <span className="text-gray-400 font-medium text-[10px] line-through">{product.originalPrice.toLocaleString()}원</span>
                           </div>
                         )}
-                        <div className="flex items-baseline gap-1 text-[#008f7a]">
+                        <div className="flex items-baseline gap-1 text-orange-500">
                           <span className="text-xl font-black leading-none">{product.price.toLocaleString()}</span>
                           <span className="text-xs font-bold ml-0.5">원</span>
                         </div>
@@ -355,7 +355,7 @@ export default function BrandsPage() {
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`w-10 h-10 shrink-0 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${currentPage === i + 1 ? 'bg-[#008f7a] text-white shadow-md border border-[#008f7a]' : 'text-gray-600 border border-transparent hover:bg-gray-100'}`}
+                  className={`w-10 h-10 shrink-0 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${currentPage === i + 1 ? 'bg-orange-500 text-white shadow-md border border-orange-500' : 'text-gray-600 border border-transparent hover:bg-gray-100'}`}
                 >
                   {i + 1}
                 </button>
