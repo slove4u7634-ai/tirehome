@@ -36,7 +36,7 @@ export default function Header() {
           </div>
 
           {/* PC 메뉴 */}
-          <nav className="hidden md:flex flex-1 justify-center space-x-10 lg:space-x-16 items-center">
+          <nav className="hidden md:flex flex-1 justify-evenly items-center w-full px-2 lg:px-6">
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/brands">브랜드별 타이어</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/">차종별 타이어</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/events">이벤트 / 혜택</Link>
