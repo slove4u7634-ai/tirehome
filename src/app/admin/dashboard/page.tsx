@@ -710,10 +710,36 @@ export default function AdminDashboardPage() {
                 className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 font-bold text-gray-700 w-full"
               />
               <div className="flex gap-4">
-                <input 
-                  type="text" placeholder="썸네일 이미지 URL (필수)" value={newReviewImg} onChange={(e) => setNewReviewImg(e.target.value)} required
-                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm w-1/2"
-                />
+                <div className="flex gap-2 w-1/2">
+                  <input 
+                    type="text" placeholder="썸네일 이미지 URL (필수)" value={newReviewImg} onChange={(e) => setNewReviewImg(e.target.value)} required
+                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm"
+                  />
+                  <label className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg cursor-pointer transition-colors text-sm flex items-center justify-center shrink-0">
+                    <span>파일 첨부</span>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        try {
+                          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setNewReviewImg(data.url);
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          alert('이미지 업로드 실패');
+                        }
+                      }} 
+                      className="hidden" 
+                    />
+                  </label>
+                </div>
                 <input 
                   type="text" placeholder="네이버 블로그 링크 URL (필수)" value={newReviewLink} onChange={(e) => setNewReviewLink(e.target.value)} required
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm w-1/2"
