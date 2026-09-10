@@ -13,6 +13,7 @@ function ReservationForm() {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [showCostPopup, setShowCostPopup] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -212,10 +213,38 @@ function ReservationForm() {
           </div>
           <div className="flex border-b border-gray-100">
             <div className="w-32 md:w-48 bg-gray-50 p-4 font-bold text-sm flex items-center">휠 얼라인먼트</div>
-            <div className="flex-1 p-4 text-sm flex items-center gap-2">
+            <div className="flex-1 p-4 text-sm flex items-center gap-2 flex-wrap relative">
               <input type="checkbox" checked={formData.alignment} onChange={e => setFormData({...formData, alignment: e.target.checked})} className="accent-[#FF4500]" />
-              휠 얼라인먼트 무상점검요청 (점검 후 교정작업 진행 시 비용발생)
-              <span className="text-[#FF4500]">비용확인하기</span>
+              <span>휠 얼라인먼트 무상점검요청 (점검 후 교정작업 진행 시 비용발생)</span>
+              
+              <div className="relative inline-block ml-1">
+                <button 
+                  type="button" 
+                  onClick={() => setShowCostPopup(!showCostPopup)} 
+                  className="text-[#FF4500] hover:underline focus:outline-none"
+                >
+                  비용확인하기
+                </button>
+                
+                {showCostPopup && (
+                  <div className="absolute top-full left-0 md:left-full md:-ml-32 mt-2 w-72 bg-[#2d2d2d] text-white p-4 rounded shadow-2xl z-50 text-xs border border-gray-700">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex flex-col gap-2 w-full">
+                        <div className="flex justify-between w-full">
+                          <span className="text-gray-100">국산 승용차량</span> 
+                          <span className="font-bold text-white text-sm">44,000원~66,000원</span>
+                        </div>
+                        <div className="flex justify-between w-full border-t border-gray-600 pt-2">
+                          <span className="text-gray-100">수입차</span> 
+                          <span className="font-bold text-white text-sm">55,000원~88,000원</span>
+                        </div>
+                        <p className="text-gray-400 mt-1">(일부 차종별 금액 상이하니 별도 문의)</p>
+                      </div>
+                      <button type="button" onClick={() => setShowCostPopup(false)} className="text-gray-400 hover:text-white font-black px-2 ml-2 -mt-1 -mr-2">X</button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className="flex">
