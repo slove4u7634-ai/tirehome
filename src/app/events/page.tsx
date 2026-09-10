@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { EVENTS_DATA } from '@/lib/events';
 
 export default function EventsPage() {
   return (
@@ -15,14 +16,14 @@ export default function EventsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom duration-700 delay-150">
-          {[1, 2, 3].map((item) => (
-            <Link href={`/events/${item}`} key={item} className="block rounded-2xl overflow-hidden shadow-md group border border-gray-100 hover:border-orange-500 transition-colors hover:shadow-lg">
-              <div className="aspect-[2/1] overflow-hidden bg-gray-50">
-                <img src={`/img/banner_${item}.jpg`} alt={`이벤트 ${item}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          {EVENTS_DATA.map((event) => (
+            <Link href={`/events/${event.id}`} key={event.id} className="block rounded-2xl overflow-hidden shadow-md group border border-gray-100 hover:border-orange-500 transition-colors hover:shadow-lg flex flex-col h-full">
+              <div className="aspect-[2/1] overflow-hidden bg-gray-50 shrink-0">
+                <img src={event.image} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <div className="p-6 bg-white">
-                <h3 className="font-bold text-lg text-gray-900 mb-2">특별 혜택 이벤트 {item}</h3>
-                <p className="text-sm text-gray-500">2026.09.01 ~ 2026.09.30</p>
+              <div className="p-6 bg-white flex-1 flex flex-col justify-between">
+                <h3 className="font-bold text-lg text-gray-900 mb-4 line-clamp-2">{event.title}</h3>
+                <p className="text-sm text-gray-500">{event.date}</p>
               </div>
             </Link>
           ))}
