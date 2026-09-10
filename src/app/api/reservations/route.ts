@@ -18,7 +18,7 @@ export async function GET(request: Request) {
       return {
         id: post.id,
         status: post.status,
-        createdAt: post.date || new Date().toISOString(),
+        createdAt: post.createdAt || new Date().toISOString(),
         ...content
       };
     });
@@ -37,8 +37,7 @@ export async function POST(request: Request) {
       title: body.customer?.name || '새 방문예약',
       content: JSON.stringify(body),
       status: 'pending',
-      type: 'reservation',
-      date: new Date().toISOString()
+      type: 'reservation'
     };
 
     const res = await fetch(supabaseUrl('posts'), {
