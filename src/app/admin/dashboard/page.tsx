@@ -25,6 +25,10 @@ export default function AdminDashboardPage() {
   const [newReviewImg, setNewReviewImg] = useState('');
   const [newReviewLink, setNewReviewLink] = useState('');
   const [newReviewDesc, setNewReviewDesc] = useState('');
+  const [newBannerTitle1, setNewBannerTitle1] = useState('');
+  const [newBannerTitle2, setNewBannerTitle2] = useState('');
+  const [newBannerDesc, setNewBannerDesc] = useState('');
+  const [newBannerImg, setNewBannerImg] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
 
   // Product state
@@ -213,6 +217,17 @@ export default function AdminDashboardPage() {
       } catch (e) {
         setNewReviewDesc((post as any).content || '');
       }
+    } else if (type === 'banner') {
+      setNewTitle(post.title || '배너');
+      try {
+        const data = JSON.parse((post as any).content || '{}');
+        setNewBannerImg(data.img || '');
+        setNewBannerTitle1(data.title1 || '');
+        setNewBannerTitle2(data.title2 || '');
+        setNewBannerDesc(data.desc || '');
+      } catch (e) {
+        // Fallback
+      }
     } else {
       setNewContent((post as any).content || '');
     }
@@ -249,6 +264,10 @@ export default function AdminDashboardPage() {
     setNewReviewImg('');
     setNewReviewLink('');
     setNewReviewDesc('');
+    setNewBannerImg('');
+    setNewBannerTitle1('');
+    setNewBannerTitle2('');
+    setNewBannerDesc('');
     
     setEditingProdId(null);
     setNewProdBrand('KUMHO');
@@ -349,25 +368,30 @@ export default function AdminDashboardPage() {
       return;
     }
 
-    if (!newTitle) return alert('제목을 입력하세요');
+    if (type !== 'banner' && !newTitle) return alert('제목을 입력하세요');
     
     let finalContent = newContent;
+    let finalTitle = newTitle;
+
     if (type === 'review') {
       finalContent = JSON.stringify({ img: newReviewImg, link: newReviewLink, desc: newReviewDesc });
+    } else if (type === 'banner') {
+      finalTitle = newBannerTitle1 || '메인 배너';
+      finalContent = JSON.stringify({ img: newBannerImg, title1: newBannerTitle1, title2: newBannerTitle2, desc: newBannerDesc });
     }
     
     if (editingId) {
       await fetch(`/api/posts?id=${editingId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle, content: finalContent, status: newStatus })
+        body: JSON.stringify({ title: finalTitle, content: finalContent, status: newStatus })
       });
       setEditingId(null);
     } else {
       await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle, content: finalContent, type, status: newStatus })
+        body: JSON.stringify({ title: finalTitle, content: finalContent, type, status: newStatus })
       });
     }
     
@@ -603,7 +627,13 @@ export default function AdminDashboardPage() {
             onClick={() => { setType('review'); handleCancelEdit(); }}
             className={`px-4 py-2 font-bold rounded-lg ${type === 'review' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
           >
-            장착후기 갤러리 관리
+            장착후기 관리
+          </button>
+          <button 
+            onClick={() => { setType('banner'); handleCancelEdit(); }}
+            className={`px-4 py-2 font-bold rounded-lg ${type === 'banner' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
+          >
+            메인 배너 관리
           </button>
         </div>
 
@@ -749,6 +779,54 @@ export default function AdminDashboardPage() {
               <textarea 
                 placeholder="간단한 요약 설명" value={newReviewDesc} onChange={(e) => setNewReviewDesc(e.target.value)} required
                 className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 h-24 text-sm w-full"
+              />
+            </>
+          ) : type === 'banner' ? (
+            <>
+              <div className="flex gap-4">
+                <input 
+                  type="text" placeholder="메인 타이틀 (예: 내 차에 딱 맞는)" value={newBannerTitle1} onChange={(e) => setNewBannerTitle1(e.target.value)} required
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 font-bold text-gray-700 w-1/2"
+                />
+                <input 
+                  type="text" placeholder="서브 타이틀 (예: 타이어 찾기 - 주황색 강조)" value={newBannerTitle2} onChange={(e) => setNewBannerTitle2(e.target.value)}
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 font-bold text-gray-700 w-1/2"
+                />
+              </div>
+              <div className="flex gap-4 mt-2">
+                <div className="flex gap-2 w-full">
+                  <input 
+                    type="text" placeholder="배경 이미지 URL (가로형 고해상도 권장)" value={newBannerImg} onChange={(e) => setNewBannerImg(e.target.value)} required
+                    className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm"
+                  />
+                  <label className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg cursor-pointer transition-colors text-sm flex items-center justify-center shrink-0">
+                    <span>이미지 업로드</span>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        try {
+                          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setNewBannerImg(data.url);
+                          }
+                        } catch (err) {
+                          alert('이미지 업로드 실패');
+                        }
+                      }} 
+                      className="hidden" 
+                    />
+                  </label>
+                </div>
+              </div>
+              <textarea 
+                placeholder="배너 상세 설명 (줄바꿈 가능)" value={newBannerDesc} onChange={(e) => setNewBannerDesc(e.target.value)}
+                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 h-24 text-sm w-full mt-2"
               />
             </>
           ) : (
