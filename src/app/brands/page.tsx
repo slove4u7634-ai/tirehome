@@ -264,8 +264,7 @@ export default function BrandsPage() {
                           <span>💬</span> {product.reviewCount || 0}
                         </div>
                         <div className="flex items-center gap-2 ml-4">
-                          <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded flex items-center gap-1">🚚 무료배송</span>
-                          <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded flex items-center gap-1">🔧 무료장착</span>
+                          <span className="bg-orange-50 border border-orange-200 text-orange-600 px-2.5 py-1 rounded-md flex items-center gap-1.5 shadow-sm font-black">🔧 무료장착</span>
                         </div>
                       </div>
                     </div>
