@@ -96,11 +96,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   {product.originalPrice && product.originalPrice > realPrice && (
                     <div className="flex items-center gap-1.5 mb-1">
                       <span className="text-red-500 font-black text-sm">{Math.round((product.originalPrice - realPrice) / product.originalPrice * 100)}%</span>
-                      <span className="text-gray-400 font-medium text-xs line-through">{product.originalPrice.toLocaleString()}원</span>
+                      <span className="text-gray-400 font-medium text-xs line-through">{(product.originalPrice * quantity).toLocaleString()}원</span>
                     </div>
                   )}
                   <div className="text-right">
-                    <span className="text-3xl md:text-4xl font-black text-gray-900">{realPrice.toLocaleString()}</span>
+                    <span className="text-3xl md:text-4xl font-black text-gray-900">{(realPrice * quantity).toLocaleString()}</span>
                     <span className="font-bold text-gray-400 ml-1 text-lg">원</span>
                   </div>
                 </div>
