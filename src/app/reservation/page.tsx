@@ -177,7 +177,7 @@ function ReservationForm() {
             <div className="flex-1 p-4 flex flex-col md:flex-row gap-4 items-start md:items-center">
               <label className="flex items-center gap-1"><input type="radio" checked readOnly className="accent-[#FF4500]" /> 예약방문장착</label>
               <input type="date" value={formData.visitDate} onChange={e => setFormData({...formData, visitDate: e.target.value})} className="border p-2 text-sm" required />
-              <span className="text-[#FF4500] text-xs">* 택배배송은 별도 문의주세요 (1811-7488)</span>
+              <span className="text-[#FF4500] text-xs">* 택배배송은 별도 문의주세요 (미정)</span>
             </div>
           </div>
           <div className="flex border-b border-gray-100">
@@ -199,14 +199,14 @@ function ReservationForm() {
             <div className="w-32 md:w-48 bg-gray-50 p-4 font-bold text-sm flex items-start pt-6">매장정보</div>
             <div className="flex-1 p-4 flex gap-6 items-start">
               <div className="w-48 h-32 bg-gray-200 hidden md:flex items-center justify-center text-sm font-bold text-gray-500 overflow-hidden relative">
-                 <img src="https://via.placeholder.com/300x200?text=Shop" className="absolute inset-0 w-full h-full object-cover" alt="Shop" />
-                 <span className="relative z-10 bg-white/80 px-2 py-1">찐타이어 본점</span>
+                 <img src="/img/banner_1.jpg" className="absolute inset-0 w-full h-full object-cover" alt="Shop" />
+                 <span className="relative z-10 bg-white/80 px-2 py-1">타이어투데이 일산본점</span>
               </div>
               <div className="flex flex-col gap-2 text-sm">
-                <h3 className="font-black text-lg mb-2">찐타이어 본점</h3>
-                <div className="flex gap-2"><span className="bg-[#FF9933] text-white px-2 py-0.5 text-xs">매장주소</span> <span>경기도 김포시 통진읍 서암고정로22</span></div>
+                <h3 className="font-black text-lg mb-2">타이어투데이 일산본점</h3>
+                <div className="flex gap-2"><span className="bg-[#FF9933] text-white px-2 py-0.5 text-xs">매장주소</span> <span>경기도 고양시 일산서구 덕이로 292</span></div>
                 <div className="flex gap-2"><span className="bg-[#FF9933] text-white px-2 py-0.5 text-xs">영업시간</span> <span>평일 09:00 ~ 19:00 | 토/공휴일 09:00 ~ 18:00</span></div>
-                <div className="flex gap-2"><span className="bg-[#FF9933] text-white px-2 py-0.5 text-xs">문의전화</span> <span className="font-bold">1811-7488</span></div>
+                <div className="flex gap-2"><span className="bg-[#FF9933] text-white px-2 py-0.5 text-xs">문의전화</span> <span className="font-bold text-gray-400">미정</span></div>
               </div>
             </div>
           </div>
