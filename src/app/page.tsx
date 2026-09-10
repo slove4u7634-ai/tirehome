@@ -6,6 +6,7 @@ import WeeklyBest from '@/components/WeeklyBest';
 import MonthlyBest from '@/components/MonthlyBest';
 import MdPick from '@/components/MdPick';
 import Link from 'next/link';
+import { EVENTS_DATA } from '@/lib/events';
 
 export default function Home() {
   return (
@@ -51,16 +52,12 @@ export default function Home() {
                 전체보기 &gt;
               </Link>
             </div>
-            <div className="flex overflow-x-auto gap-4 px-4 pb-4">
-              <Link href="/events/1" className="block shrink-0 transition-transform hover:-translate-y-1">
-                <img src="/img/banner_1.jpg" alt="이벤트 배너" className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md" />
-              </Link>
-              <Link href="/events/2" className="block shrink-0 transition-transform hover:-translate-y-1">
-                <img src="/img/banner_2.jpg" alt="이벤트 배너" className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md" />
-              </Link>
-              <Link href="/events/3" className="block shrink-0 transition-transform hover:-translate-y-1">
-                <img src="/img/banner_3.jpg" alt="이벤트 배너" className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md" />
-              </Link>
+            <div className="flex overflow-x-auto gap-4 px-4 pb-4 scrollbar-hide">
+              {EVENTS_DATA.map((event) => (
+                <Link href={`/events/${event.id}`} key={event.id} className="block shrink-0 transition-transform hover:-translate-y-1">
+                  <img src={event.image} alt={event.title} className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md border border-gray-100" />
+                </Link>
+              ))}
             </div>
           </div>
         </section>
