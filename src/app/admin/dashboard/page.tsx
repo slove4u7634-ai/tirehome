@@ -16,6 +16,7 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [products, setProducts] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
   const [type, setType] = useState('notice'); // notice, faq, product
   
   // Post state
@@ -175,12 +176,28 @@ export default function AdminDashboardPage() {
       router.push('/admin/login');
       return;
     }
+    fetchReservations(); // Always fetch to compute unread badge
     if (type === 'product') {
       fetchProducts();
-    } else {
+    } else if (type !== 'reservation') {
       fetchPosts();
     }
   }, [type]);
+
+  const fetchReservations = async () => {
+    const res = await fetch(`/api/reservations`);
+    const data = await res.json();
+    setReservations(data);
+  };
+
+  const handleReservationStatus = async (id: number, status: string) => {
+    await fetch(`/api/reservations`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status })
+    });
+    fetchReservations();
+  };
 
   const fetchPosts = async () => {
     const res = await fetch(`/api/posts?type=${type}`);
@@ -656,9 +673,21 @@ export default function AdminDashboardPage() {
           >
             메인 배너 관리
           </button>
+          <button 
+            onClick={() => { setType('reservation'); handleCancelEdit(); }}
+            className={`px-4 py-2 font-bold rounded-lg flex items-center gap-1 ${type === 'reservation' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'}`}
+          >
+            방문예약 관리
+            {reservations.filter(r => r.status === 'pending').length > 0 && (
+              <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-black ml-1">
+                {reservations.filter(r => r.status === 'pending').length}
+              </span>
+            )}
+          </button>
         </div>
 
         {/* 새 글 작성 / 상품 등록 폼 */}
+        {type !== 'reservation' && (
         <form onSubmit={handleSubmit} className={`mb-8 p-6 rounded-xl border flex flex-col gap-4 ${(editingId || editingProdId) ? 'bg-orange-50 border-orange-200' : 'bg-gray-50 border-gray-200'}`}>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
@@ -963,6 +992,7 @@ export default function AdminDashboardPage() {
             </button>
           </div>
         </form>
+        )}
 
         {/* 제품 검색 필터 */}
         {type === 'product' && (
@@ -1066,7 +1096,66 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
+        {/* 방문예약 내역 표시 */}
+        {type === 'reservation' && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">방문예약 내역</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm whitespace-nowrap">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="p-3">접수일시</th>
+                    <th className="p-3">고객명(연락처)</th>
+                    <th className="p-3">차량(번호)</th>
+                    <th className="p-3">방문일시</th>
+                    <th className="p-3">예약상품</th>
+                    <th className="p-3">상태</th>
+                    <th className="p-3">관리</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservations.map((r: any) => (
+                    <tr key={r.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="p-3 text-gray-500">{new Date(r.createdAt).toLocaleString()}</td>
+                      <td className="p-3 font-bold">{r.customer.name} <span className="text-gray-500 font-normal">({r.customer.phone})</span></td>
+                      <td className="p-3">{r.customer.car} <br/><span className="text-xs text-gray-500">{r.customer.carNumber}</span></td>
+                      <td className="p-3 text-blue-600 font-bold">{r.schedule.date} <br/><span className="text-xs">{r.schedule.time}</span></td>
+                      <td className="p-3">
+                        {r.product ? (
+                          <>
+                            <div className="font-bold">{r.product.name}</div>
+                            <div className="text-xs text-gray-500">{r.product.size} / {r.product.qty}개 / {r.product.totalPrice?.toLocaleString()}원</div>
+                          </>
+                        ) : '없음'}
+                      </td>
+                      <td className="p-3">
+                        <select 
+                          value={r.status} 
+                          onChange={(e) => handleReservationStatus(r.id, e.target.value)}
+                          className={`p-1 border rounded text-xs font-bold ${r.status === 'pending' ? 'bg-red-50 text-red-600 border-red-200' : r.status === 'completed' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-gray-50 text-gray-600'}`}
+                        >
+                          <option value="pending">예약대기</option>
+                          <option value="confirmed">예약확정</option>
+                          <option value="completed">장착완료</option>
+                          <option value="cancelled">취소됨</option>
+                        </select>
+                      </td>
+                      <td className="p-3">
+                        <button onClick={() => alert('남기실말씀: ' + r.options.message + '\n휠얼라인먼트: ' + (r.options.alignment ? '요청함' : '안함'))} className="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 text-xs font-bold">상세보기</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {reservations.length === 0 && (
+                    <tr><td colSpan={7} className="p-10 text-center text-gray-500">예약 내역이 없습니다.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {/* 목록 표시 */}
+        {type !== 'reservation' && (
         <div className="border border-gray-200 rounded-xl overflow-hidden">
           <table className="w-full text-left">
             <thead className="bg-gray-100 border-b border-gray-200">
@@ -1219,6 +1308,7 @@ export default function AdminDashboardPage() {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );
