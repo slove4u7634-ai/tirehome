@@ -59,43 +59,14 @@ export default function SearchForm() {
     <div className="w-full relative px-4 md:px-0">
       <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl shadow-gray-400/20 p-4 md:p-8 border border-gray-100 -mt-12 md:mt-0 relative z-30 animate-in fade-in slide-in-from-bottom duration-700">
         
-        {/* Tabs */}
-        <div className="flex w-full bg-gray-100 rounded-xl p-1 mb-4 md:mb-6">
-          <button 
-            onClick={() => setActiveTab('size')}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-3 text-[11px] md:text-sm font-black rounded-lg transition-all duration-300 ${activeTab === 'size' ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 md:w-5 md:h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" />
-            </svg>
-            <span className={activeTab === 'size' ? 'text-gray-900' : ''}>사이즈로 찾기</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('car')}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-3 text-[11px] md:text-sm font-black rounded-lg transition-all duration-300 ${activeTab === 'car' ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 md:w-5 md:h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-            </svg>
-            <span className={activeTab === 'car' ? 'text-gray-900' : ''}>차종으로 찾기</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('ai')}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-3 text-[11px] md:text-sm font-black rounded-lg transition-all duration-300 ${activeTab === 'ai' ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4 md:w-5 md:h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0 3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-            </svg>
-            <span className={activeTab === 'ai' ? 'text-gray-900' : ''}>AI 빠른검색</span>
-          </button>
+        <div className="mb-4 text-center">
+          <h2 className="text-xl md:text-2xl font-black text-gray-900">타이어 사이즈로 찾기</h2>
         </div>
-
-        {/* Tab Content */}
+        {/* Search Only By Size */}
         <div className="space-y-3 min-h-[140px]">
           
           {/* 1. 사이즈로 찾기 */}
-          {activeTab === 'size' && (
-            <div className="grid grid-cols-3 gap-2 animate-in fade-in zoom-in duration-300">
+          <div className="grid grid-cols-3 gap-2 animate-in fade-in zoom-in duration-300">
               <select 
                 value={sizeW} 
                 onChange={(e) => setSizeW(e.target.value)}
@@ -127,51 +98,6 @@ export default function SearchForm() {
                 ))}
               </select>
             </div>
-          )}
-
-          {/* 2. 차종으로 찾기 */}
-          {activeTab === 'car' && (
-            <div className="grid grid-cols-2 gap-2 animate-in fade-in zoom-in duration-300">
-              <select 
-                className="w-full p-2.5 md:p-4 bg-gray-50 border border-gray-100 rounded-lg md:rounded-xl font-bold text-gray-800 outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-[11px] md:text-base appearance-none transition-all" 
-                value={selectedBrand}
-                onChange={handleBrandChange}
-              >
-                <option value="" disabled>브랜드</option>
-                {Object.keys(carData).map(brand => (
-                  <option key={brand} value={brand}>{brand}</option>
-                ))}
-              </select>
-              
-              <select 
-                className="w-full p-2.5 md:p-4 bg-gray-50 border border-gray-100 rounded-lg md:rounded-xl font-bold text-gray-800 outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-[11px] md:text-base appearance-none transition-all" 
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                disabled={!selectedBrand}
-              >
-                <option value="" disabled>차종</option>
-                {selectedBrand && carData[selectedBrand].map(model => (
-                  <option key={model} value={model}>{model}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* 3. AI 빠른검색 */}
-          {activeTab === 'ai' && (
-            <div className="flex gap-2 animate-in fade-in zoom-in duration-300">
-              <div className="flex-1 relative">
-                <input 
-                  type="text" 
-                  placeholder="차량번호를 입력해주세요 (예: 123가4567)" 
-                  className="w-full p-2.5 md:p-4 bg-gray-50 border border-gray-100 rounded-lg md:rounded-xl font-bold text-gray-800 outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-sm md:text-base transition-all"
-                />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-              </div>
-            </div>
-          )}
 
           <button 
             onClick={handleSearchClick}
