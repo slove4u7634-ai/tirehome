@@ -7,11 +7,13 @@ import { useRouter } from 'next/navigation';
 export default function Header() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/brands?size=${encodeURIComponent(searchQuery.trim())}`);
+      setIsMobileMenuOpen(false); // 검색 시 모바일 메뉴 닫기
     }
   };
 
@@ -47,7 +49,11 @@ export default function Header() {
             <div className="flex justify-end items-center gap-6">
               
               {/* 모바일 햄버거 버튼 */}
-              <button className="md:hidden p-2 -mr-2 text-gray-500 hover:text-orange-500 transition-colors">
+              {/* 모바일 햄버거 버튼 */}
+              <button 
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="md:hidden p-2 -mr-2 text-gray-500 hover:text-orange-500 transition-colors"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -97,6 +103,69 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* 모바일 서랍 메뉴 (Drawer) */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-[100] flex justify-end">
+          {/* 어두운 배경 오버레이 (클릭 시 닫힘) */}
+          <div 
+            className="absolute inset-0 bg-black/50 transition-opacity" 
+            onClick={() => setIsMobileMenuOpen(false)}
+          ></div>
+
+          {/* 서랍 컨텐츠 */}
+          <div className="relative w-[80%] max-w-sm bg-white h-full shadow-2xl flex flex-col overflow-y-auto animate-in slide-in-from-right duration-300">
+            {/* 닫기 버튼 & 헤더 */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+              <span className="font-bold text-lg text-[#1B3A8C]">전체메뉴</span>
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 text-gray-500 hover:text-red-500 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* 모바일 전용 검색창 */}
+            <div className="p-4 border-b border-gray-100 bg-gray-50">
+              <form onSubmit={handleSearch} className="flex items-center bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+                <input 
+                  type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="사이즈를 검색해보세요." 
+                  className="bg-transparent border-none outline-none text-sm w-full font-bold text-gray-700 placeholder-gray-400" 
+                />
+                <button type="submit" className="text-orange-500 ml-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                  </svg>
+                </button>
+              </form>
+            </div>
+
+            {/* 모바일 메뉴 리스트 */}
+            <nav className="flex flex-col py-2">
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/brands" className="px-6 py-4 text-base font-bold text-gray-800 border-b border-gray-50 hover:bg-gray-50">브랜드관</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/events" className="px-6 py-4 text-base font-bold text-gray-800 border-b border-gray-50 hover:bg-gray-50">이벤트 / 혜택</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/cs" className="px-6 py-4 text-base font-bold text-gray-800 border-b border-gray-50 hover:bg-gray-50">고객센터</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/reviews" className="px-6 py-4 text-base font-bold text-gray-800 border-b border-gray-50 hover:bg-gray-50">장착후기</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/reservation/check" className="px-6 py-4 text-base font-bold text-gray-800 border-b border-gray-50 hover:bg-gray-50">예약확인</Link>
+            </nav>
+            
+            <div className="mt-auto p-6 bg-gray-50">
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/admin/login" className="flex items-center text-sm font-bold text-gray-500 hover:text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4 mr-1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                </svg>
+                관리자 로그인
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
