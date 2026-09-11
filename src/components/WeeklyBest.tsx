@@ -54,7 +54,8 @@ export default function WeeklyBest() {
                     <h3 className="text-base md:text-lg font-black text-gray-900 mb-1 leading-snug md:leading-tight group-hover:text-orange-500 transition-colors line-clamp-2 min-h-0 md:min-h-[3.5rem]">
                       {prod.name}
                     </h3>
-                    <p className="text-xs text-gray-400 font-bold mb-2 md:mb-auto">{prod.subtitle || prod.size}</p>
+                    {prod.size && <p className="text-[10px] md:text-xs text-orange-500 font-black mb-1">{prod.size}</p>}
+                    <p className="text-[10px] md:text-xs text-gray-400 font-bold mb-2 md:mb-auto line-clamp-1">{prod.subtitle}</p>
                     <div className="flex items-end justify-between mt-auto pt-2 md:pt-4">
                       <div className="flex flex-col">
                         {prod.originalPrice && prod.originalPrice > prod.price && (

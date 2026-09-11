@@ -71,10 +71,10 @@ export default async function Home() {
                 전체보기 &gt;
               </Link>
             </div>
-            <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
+            <div className="flex flex-col md:flex-row md:overflow-x-auto gap-4 md:pb-4 scrollbar-hide">
               {events.map((event) => (
                 <Link href={`/events/${event.id}`} key={event.id} className="block shrink-0 transition-transform hover:-translate-y-1">
-                  <img src={event.image} alt={event.title} className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md border border-gray-100" />
+                  <img src={event.image} alt={event.title} className="w-full md:w-[400px] h-auto md:h-[150px] object-cover rounded-xl shadow-md border border-gray-100" />
                 </Link>
               ))}
             </div>

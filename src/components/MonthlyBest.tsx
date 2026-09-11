@@ -55,7 +55,8 @@ export default function MonthlyBest() {
                   <h3 className="text-base md:text-lg font-black text-gray-900 mb-1 leading-snug md:leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2 min-h-0 md:min-h-[3.5rem]">
                     {prod.name}
                   </h3>
-                  <p className="text-xs text-gray-400 font-bold mb-2 md:mb-auto line-clamp-1">{prod.subtitle || prod.size}</p>
+                  {prod.size && <p className="text-[10px] md:text-xs text-indigo-500 font-black mb-1">{prod.size}</p>}
+                  <p className="text-[10px] md:text-xs text-gray-400 font-bold mb-2 md:mb-auto line-clamp-1">{prod.subtitle}</p>
                   
                   <div className="flex items-end justify-between mt-auto pt-2 md:pt-4 border-t border-gray-50">
                     <div className="flex flex-col">

@@ -56,7 +56,8 @@ export default function MdPick() {
                   <h3 className="text-base md:text-xl font-black text-white mb-1 md:mb-2 leading-snug md:leading-tight group-hover:text-orange-400 transition-colors line-clamp-2 min-h-0 md:min-h-[3.5rem]">
                     {prod.name}
                   </h3>
-                  <p className="hidden md:block text-sm text-zinc-500 font-medium mb-6 line-clamp-2 leading-relaxed">{prod.subtitle || '뛰어난 퍼포먼스와 안정성을 경험해보세요.'}</p>
+                  {prod.size && <p className="text-[10px] md:text-xs text-orange-400 font-black mb-1">{prod.size}</p>}
+                  <p className="hidden md:block text-sm text-zinc-500 font-medium mb-6 line-clamp-2 leading-relaxed">{prod.subtitle}</p>
                   
                   <div className="flex items-end justify-between mt-auto">
                     <div className="flex flex-col">
