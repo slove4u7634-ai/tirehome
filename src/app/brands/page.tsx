@@ -20,6 +20,7 @@ export default function BrandsPage() {
   const [selectedBrand, setSelectedBrand] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [selectedFeature, setSelectedFeature] = useState<string>("ALL");
+  const [specialFilter, setSpecialFilter] = useState<string>("ALL");
   const [searchSize, setSearchSize] = useState<string>("");
   const [sortOption, setSortOption] = useState<string>("recommend"); // recommend, low_price, high_discount
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
@@ -32,8 +33,12 @@ export default function BrandsPage() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const sizeParam = searchParams.get('size');
+    const filterParam = searchParams.get('filter');
     if (sizeParam) {
       setSearchSize(sizeParam);
+    }
+    if (filterParam) {
+      setSpecialFilter(filterParam);
     }
     fetch('/api/products')
       .then(res => res.json())
@@ -45,9 +50,15 @@ export default function BrandsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedBrand, selectedCategory, selectedFeature, searchSize, sortOption]);
+  }, [selectedBrand, selectedCategory, selectedFeature, specialFilter, searchSize, sortOption]);
 
   let filteredProducts = allProducts;
+  if (specialFilter === 'weekly') {
+    filteredProducts = filteredProducts.filter(p => p.isWeeklyBest);
+  } else if (specialFilter === 'mdpick') {
+    filteredProducts = filteredProducts.filter(p => p.isMdPick);
+  }
+
   if (selectedBrand !== "ALL") {
     filteredProducts = filteredProducts.filter(p => p.brand === selectedBrand);
   }
@@ -86,6 +97,34 @@ export default function BrandsPage() {
     <div className="flex-1 bg-white py-8 md:py-12">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1200px]">
         
+        {specialFilter === 'weekly' && (
+          <div className="mb-8 border-b border-gray-900 pb-4 flex justify-between items-end">
+            <div>
+              <h2 className="text-3xl font-black flex items-center gap-2 text-gray-900">
+                <span className="text-orange-500">🔥</span> 주간 BEST 타이어
+              </h2>
+              <p className="text-gray-500 font-medium mt-2">지금 가장 핫한 인기 타이어 목록입니다.</p>
+            </div>
+            <button onClick={() => { setSpecialFilter("ALL"); window.history.pushState({}, '', '/brands'); }} className="text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors">
+              필터 해제 ✕
+            </button>
+          </div>
+        )}
+
+        {specialFilter === 'mdpick' && (
+          <div className="mb-8 border-b border-gray-900 pb-4 flex justify-between items-end">
+            <div>
+              <h2 className="text-3xl font-black flex items-center gap-2 text-gray-900">
+                <span className="w-1.5 h-8 bg-orange-500"></span> MD's PICK
+              </h2>
+              <p className="text-gray-500 font-medium mt-2">타이어 전문가가 자신 있게 추천하는 완벽한 선택입니다.</p>
+            </div>
+            <button onClick={() => { setSpecialFilter("ALL"); window.history.pushState({}, '', '/brands'); }} className="text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors">
+              필터 해제 ✕
+            </button>
+          </div>
+        )}
+
         {/* 상단 통합 검색 바 */}
         <div className="flex flex-col md:flex-row gap-2 mb-6">
           <div className="flex-1 flex bg-white border border-gray-300 rounded-lg overflow-hidden">

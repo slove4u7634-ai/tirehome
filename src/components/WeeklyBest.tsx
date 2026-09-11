@@ -30,7 +30,7 @@ export default function WeeklyBest() {
             </h2>
             <p className="mt-2 text-gray-500 font-medium text-sm md:text-base">지금 가장 핫한 인기 타이어!</p>
           </div>
-          <Link className="flex items-center gap-1 text-gray-400 hover:text-orange-600 font-bold text-sm transition-all" href="/best">
+          <Link className="flex items-center gap-1 text-gray-400 hover:text-orange-600 font-bold text-sm transition-all" href="/brands?filter=weekly">
             전체보기 &gt;
           </Link>
         </div>

@@ -34,7 +34,7 @@ export default function MdPick() {
             </h2>
             <p className="mt-4 text-zinc-400 font-medium text-sm md:text-lg tracking-tight">타이어 전문가가 자신 있게 추천하는 완벽한 선택</p>
           </div>
-          <Link className="hidden md:flex items-center gap-2 text-zinc-400 hover:text-white font-bold text-sm transition-colors border border-zinc-700 hover:border-zinc-500 rounded-full px-5 py-2 mt-6 md:mt-0" href="/mdpick">
+          <Link className="hidden md:flex items-center gap-2 text-zinc-400 hover:text-white font-bold text-sm transition-colors border border-zinc-700 hover:border-zinc-500 rounded-full px-5 py-2 mt-6 md:mt-0" href="/brands?filter=mdpick">
             전체 라인업 보기 &gt;
           </Link>
         </div>
