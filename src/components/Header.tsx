@@ -72,8 +72,7 @@ export default function Header() {
 
           {/* 하단 2열: PC 메뉴 카테고리 */}
           <nav className="hidden md:flex w-full justify-center gap-10 lg:gap-20 items-center pb-6">
-            <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/brands">브랜드별 타이어</Link>
-            <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/">차종별 타이어</Link>
+            <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/brands">브랜드관</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/events">이벤트 / 혜택</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/cs">고객센터</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/reviews">장착후기</Link>
