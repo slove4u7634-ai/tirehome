@@ -43,8 +43,8 @@ export default async function Home() {
           <SearchForm />
         </section>
 
-        <div className="w-full mt-6 md:mt-8">
-          <img src="/img/main.jpg" alt="메인 프로모션" className="w-full rounded-xl shadow-md object-cover" />
+        <div className="w-full mt-6 md:mt-8 bg-[#f8f9fa] rounded-xl flex items-center justify-center overflow-hidden border border-gray-100">
+          <img src="/img/main.jpg" alt="방문 및 장착방법 안내" className="w-full h-auto max-h-[300px] md:max-h-[500px] object-contain" />
         </div>
       </div>
 
