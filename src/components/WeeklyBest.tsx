@@ -38,34 +38,34 @@ export default function WeeklyBest() {
         </div>
         
         {bestProducts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
             {bestProducts.map((prod) => (
               <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
-                <div className="h-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-300 relative flex flex-col">
-                  <div className="relative aspect-square w-full bg-gray-50 flex items-center justify-center p-6 group-hover:bg-orange-50 transition-colors">
+                <div className="h-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm md:shadow-sm group-hover:shadow-xl transition-all duration-300 relative flex flex-row md:flex-col">
+                  <div className="relative w-1/3 min-h-[120px] md:w-full md:aspect-square bg-gray-50 flex items-center justify-center p-3 md:p-6 group-hover:bg-orange-50 transition-colors shrink-0">
                     <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-white/80 backdrop-blur-sm text-xs font-black px-2.5 py-1 rounded-md shadow-sm text-gray-700 border border-gray-100">
+                    <div className="absolute top-2 left-2 md:top-4 md:left-4">
+                      <span className="bg-white/90 backdrop-blur-sm text-[9px] md:text-xs font-black px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-sm md:rounded-md shadow-sm text-gray-700 border border-gray-100">
                         {prod.brand === 'KUMHO' ? '금호타이어' : prod.brand === 'HANKOOK' ? '한국타이어' : prod.brand === 'NEXEN' ? '넥센타이어' : prod.brand}
                       </span>
                     </div>
                   </div>
-                  <div className="flex-1 p-5 flex flex-col bg-white">
-                    <h3 className="text-lg font-black text-gray-900 mb-1 leading-tight group-hover:text-orange-500 transition-colors line-clamp-2 min-h-[3.5rem]">
+                  <div className="flex-1 p-4 md:p-5 flex flex-col justify-center bg-white border-l md:border-l-0 border-gray-50 md:border-t-0">
+                    <h3 className="text-base md:text-lg font-black text-gray-900 mb-1 leading-snug md:leading-tight group-hover:text-orange-500 transition-colors line-clamp-2 min-h-0 md:min-h-[3.5rem]">
                       {prod.name}
                     </h3>
-                    <p className="text-xs text-gray-400 font-bold mb-auto">{prod.subtitle || prod.size}</p>
-                    <div className="flex items-end justify-between mt-auto pt-4">
+                    <p className="text-xs text-gray-400 font-bold mb-2 md:mb-auto">{prod.subtitle || prod.size}</p>
+                    <div className="flex items-end justify-between mt-auto pt-2 md:pt-4">
                       <div className="flex flex-col">
                         {prod.originalPrice && prod.originalPrice > prod.price && (
                           <div className="flex items-center gap-1.5 mb-0.5">
-                            <span className="text-red-500 font-black text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
-                            <span className="text-gray-400 font-medium text-xs line-through">{prod.originalPrice.toLocaleString()}원</span>
+                            <span className="text-red-500 font-black text-xs md:text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
+                            <span className="text-gray-400 font-medium text-[10px] md:text-xs line-through">{prod.originalPrice.toLocaleString()}원</span>
                           </div>
                         )}
                         <div className="flex items-baseline gap-1">
-                          <span className="text-xl font-black text-gray-900">{prod.price.toLocaleString()}</span>
-                          <span className="text-sm font-bold text-gray-600">원</span>
+                          <span className="text-lg md:text-xl font-black text-gray-900">{prod.price.toLocaleString()}</span>
+                          <span className="text-[10px] md:text-sm font-bold text-gray-600">원</span>
                         </div>
                       </div>
                     </div>

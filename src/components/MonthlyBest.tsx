@@ -35,39 +35,39 @@ export default function MonthlyBest() {
           <p className="mt-3 text-purple-200 font-medium text-sm md:text-base">놓치면 후회할 이번 달 최고의 타이어 라인업</p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
           {products.map((prod) => (
             <Link href={"/products/pt-" + prod.id} key={prod.id} className="group block">
-              <div className="h-full bg-white rounded-2xl border-4 border-transparent hover:border-purple-400 overflow-hidden shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/30 transition-all duration-300 relative flex flex-col transform group-hover:-translate-y-2">
-                <div className="relative aspect-square w-full bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-6">
-                  <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-110 transition-transform duration-500" />
+              <div className="h-full bg-white rounded-2xl border-2 md:border-4 border-transparent hover:border-purple-400 overflow-hidden shadow-sm md:shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/30 transition-all duration-300 relative flex flex-row md:flex-col transform md:group-hover:-translate-y-2">
+                <div className="relative w-1/3 min-h-[120px] md:w-full md:aspect-square bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-3 md:p-6 shrink-0">
+                  <img src={prod.img} alt="" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} className="w-full h-full object-contain mix-blend-multiply drop-shadow-md md:group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/5 to-transparent pointer-events-none"></div>
                   
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-indigo-600 text-white text-xs font-black px-2.5 py-1 rounded-md shadow-md border border-indigo-500">
+                  <div className="absolute top-2 left-2 md:top-4 md:left-4">
+                    <span className="bg-indigo-600 text-white text-[9px] md:text-xs font-black px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-sm md:rounded-md shadow-md border border-indigo-500">
                       BEST
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex-1 p-5 flex flex-col bg-white border-t border-gray-100">
-                  <span className="text-[10px] font-bold text-indigo-500 mb-1">{prod.brand}</span>
-                  <h3 className="text-lg font-black text-gray-900 mb-1 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2 min-h-[3.5rem]">
+                <div className="flex-1 p-4 md:p-5 flex flex-col justify-center bg-white border-l md:border-l-0 md:border-t border-gray-100">
+                  <span className="text-[10px] font-bold text-indigo-500 mb-0.5 md:mb-1">{prod.brand}</span>
+                  <h3 className="text-base md:text-lg font-black text-gray-900 mb-1 leading-snug md:leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2 min-h-0 md:min-h-[3.5rem]">
                     {prod.name}
                   </h3>
-                  <p className="text-xs text-gray-400 font-bold mb-auto line-clamp-1">{prod.subtitle || prod.size}</p>
+                  <p className="text-xs text-gray-400 font-bold mb-2 md:mb-auto line-clamp-1">{prod.subtitle || prod.size}</p>
                   
-                  <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-50">
+                  <div className="flex items-end justify-between mt-auto pt-2 md:pt-4 border-t border-gray-50">
                     <div className="flex flex-col">
                       {prod.originalPrice && prod.originalPrice > prod.price && (
                         <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="text-red-500 font-black text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
-                          <span className="text-gray-400 font-medium text-xs line-through">{prod.originalPrice.toLocaleString()}원</span>
+                          <span className="text-red-500 font-black text-xs md:text-sm">{Math.round((prod.originalPrice - prod.price) / prod.originalPrice * 100)}%</span>
+                          <span className="text-gray-400 font-medium text-[10px] md:text-xs line-through">{prod.originalPrice.toLocaleString()}원</span>
                         </div>
                       )}
                       <div className="flex items-baseline gap-1">
-                        <span className="text-xl font-black text-gray-900">{prod.price.toLocaleString()}</span>
-                        <span className="text-sm font-bold text-gray-600">원</span>
+                        <span className="text-lg md:text-xl font-black text-gray-900">{prod.price.toLocaleString()}</span>
+                        <span className="text-[10px] md:text-sm font-bold text-gray-600">원</span>
                       </div>
                     </div>
                   </div>

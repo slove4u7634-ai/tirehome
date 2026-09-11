@@ -35,7 +35,7 @@ export default async function Home() {
   return (
     <div className="flex-1 bg-white">
       <div className="mx-auto w-full max-w-[1600px] px-4 md:px-8">
-        <div className="w-full relative bg-gray-900 border-none rounded-xl overflow-hidden mt-2 shadow-lg">
+        <div className="hidden md:block w-full relative bg-gray-900 border-none rounded-xl overflow-hidden mt-2 shadow-lg">
           <MainBanner />
         </div>
 
