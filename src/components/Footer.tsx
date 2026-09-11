@@ -9,17 +9,8 @@ export default function Footer() {
             
             <div className="md:col-span-2 flex justify-between items-center md:block">
               <div className="flex items-center gap-2 md:gap-4 mb-0 md:mb-6">
-                <div className="flex flex-col items-start leading-none pt-1">
-                  <div className="flex items-center">
-                    <span className="text-3xl md:text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}>TIRE</span>
-                    <div className="relative inline-flex items-center justify-center px-1 md:px-2 mx-0.5 md:mx-1 h-8 md:h-12 mt-1">
-                      <div className="absolute inset-0 bg-[#F5C400] -skew-x-[15deg]"></div>
-                      <span className="relative text-3xl md:text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}>TO</span>
-                    </div>
-                    <span className="text-3xl md:text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}>DAY</span>
-                  </div>
-                  <span className="text-xs md:text-sm font-bold text-gray-400 tracking-[0.1em] pl-0.5 mt-1" style={{ fontFamily: 'Arial, sans-serif' }}>타이어투데이</span>
-                </div>
+                <img src="/logo.jpg" alt="타이어투데이 로고" className="h-14 md:h-20 w-auto object-contain" />
+                <span className="hidden md:block text-3xl md:text-4xl font-black text-white tracking-tight leading-none">타이어투데이</span>
               </div>
               
               <p className="hidden md:block text-sm leading-relaxed mb-6 max-w-sm">

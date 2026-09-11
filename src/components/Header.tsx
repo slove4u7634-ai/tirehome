@@ -28,17 +28,20 @@ export default function Header() {
             {/* 좌측 영역: 로고 */}
             <div className="flex-shrink-0 flex items-center">
               <Link className="flex items-center group" href="/">
-                <div className="flex flex-col items-start leading-none pt-1 transition-transform group-hover:scale-105">
-                  <div className="flex items-center">
-                    <span className="text-3xl md:text-5xl lg:text-6xl font-black text-[#1B3A8C] tracking-tighter" style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}>TIRE</span>
-                    <div className="relative inline-flex items-center justify-center px-1 md:px-2 mx-0.5 md:mx-1 h-8 md:h-12 lg:h-14 mt-1">
-                      <div className="absolute inset-0 bg-[#F5C400] -skew-x-[15deg]"></div>
-                      <span className="relative text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter" style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}>TO</span>
-                    </div>
-                    <span className="text-3xl md:text-5xl lg:text-6xl font-black text-[#1B3A8C] tracking-tighter" style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}>DAY</span>
-                  </div>
-                  <span className="text-xs md:text-sm lg:text-base font-bold text-[#1B3A8C] tracking-[0.1em] pl-0.5 mt-1" style={{ fontFamily: 'Arial, sans-serif' }}>타이어투데이</span>
-                </div>
+                <svg viewBox="0 0 340 70" className="h-10 md:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105" xmlns="http://www.w3.org/2000/svg">
+                  {/* 노란 평행사변형 배경 - TO 전체 커버 */}
+                  <polygon points="152,4 232,4 218,66 138,66" fill="#F5C400"/>
+                  {/* TIRE */}
+                  <text x="0" y="55" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" fontSize="56" fill="#1B3A8C" letterSpacing="-1">TIRE</text>
+                  {/* T (흰색) */}
+                  <text x="148" y="55" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" fontSize="56" fill="white" letterSpacing="-1">T</text>
+                  {/* O (흰색) */}
+                  <text x="182" y="55" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" fontSize="56" fill="white">O</text>
+                  {/* DAY */}
+                  <text x="222" y="55" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" fontSize="56" fill="#1B3A8C" letterSpacing="-1">DAY</text>
+                  {/* 타이어투데이 */}
+                  <text x="4" y="68" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="13" fill="#1B3A8C" letterSpacing="1">타이어투데이</text>
+                </svg>
               </Link>
             </div>
 
