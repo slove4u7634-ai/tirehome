@@ -17,8 +17,8 @@ export default function SearchForm() {
   };
 
   return (
-    <div className="w-full relative px-4 md:px-0">
-      <div className="w-full max-w-3xl mx-auto bg-white rounded-3xl shadow-xl shadow-gray-400/10 p-6 md:p-10 border border-gray-100 -mt-12 md:mt-0 relative z-30 animate-in fade-in slide-in-from-bottom duration-700">
+    <div className="w-full relative px-0">
+      <div className="w-full bg-white rounded-3xl shadow-xl shadow-gray-400/10 p-6 md:p-10 border border-gray-100 relative z-30 animate-in fade-in slide-in-from-bottom duration-700">
         
         <div className="mb-6 md:mb-8 text-center">
           <h2 className="text-2xl md:text-3xl font-black text-gray-900">타이어 사이즈를 검색해 보세요!</h2>
