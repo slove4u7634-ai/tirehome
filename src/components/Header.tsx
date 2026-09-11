@@ -88,14 +88,14 @@ export default function Header() {
               <Link className="text-lg lg:text-xl font-bold text-gray-800 hover:text-orange-500 transition-colors whitespace-nowrap" href="/reservation/check">예약확인</Link>
             </nav>
           </div>
+
+          {/* 최하단 빨간 배너 (컨테이너 너비와 동일하게) */}
+          <div className="w-full bg-gradient-to-r from-red-600 via-rose-500 to-purple-600 animate-gradient-x bg-[length:200%_200%] text-white py-3 text-center flex items-center justify-center border-t border-white/10 mb-2 rounded-sm shadow-md">
+            <span className="text-sm md:text-base font-black tracking-tight shimmer-text px-2">
+              ⚡ [타이어 최저가 선언] 대한민국에서 타이어가 가장 싼 매장! 4짝 교체 시 휠얼라인먼트 무상 & 당일 장착 ⚡
+            </span>
+          </div>
         </div>
-      </div>
-      
-      {/* 최하단 풀위드스 빨간 배너 */}
-      <div className="w-full bg-gradient-to-r from-red-600 via-rose-500 to-purple-600 animate-gradient-x bg-[length:200%_200%] text-white py-3 text-center flex items-center justify-center border-t border-white/10">
-        <span className="text-sm md:text-base font-black tracking-tight shimmer-text">
-          ⚡ [타이어 최저가 선언] 대한민국에서 타이어가 가장 싼 매장! 4짝 교체 시 휠얼라인먼트 무상 & 당일 장착 ⚡
-        </span>
       </div>
     </header>
   );

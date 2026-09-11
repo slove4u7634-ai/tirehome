@@ -34,17 +34,15 @@ export default async function Home() {
   }
   return (
     <div className="flex-1 bg-white">
-      <div className="w-full relative bg-gray-900 border-none">
-        <MainBanner />
-      </div>
-
-      <section className="relative z-30">
-        <div className="mx-auto">
-          <SearchForm />
+      <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
+        <div className="w-full relative bg-gray-900 border-none rounded-xl overflow-hidden mt-2 shadow-lg">
+          <MainBanner />
         </div>
-      </section>
 
-
+        <section className="relative z-30 mt-6">
+          <SearchForm />
+        </section>
+      </div>
 
       <div className="mt-6 md:mt-10 pb-16 md:pb-0">
         <MonthlyBest />
