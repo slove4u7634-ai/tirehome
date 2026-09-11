@@ -39,8 +39,8 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-          <p>상호: 타이어몰 | 대표: 아무개 | 사업자등록번호: 123-45-67890</p>
-          <p className="mt-2 md:mt-0">© 2026 타이어몰. All rights reserved.</p>
+          <p>상호: 타이어투데이 | 대표: 아무개 | 사업자등록번호: 123-45-67890</p>
+          <p className="mt-2 md:mt-0">© 2026 타이어투데이. All rights reserved.</p>
         </div>
         </div>
       </footer>

@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TIREMALL | 프리미엄 타이어 전문 쇼핑몰",
+  title: "타이어투데이 | 프리미엄 타이어 전문 쇼핑몰",
   description: "최고의 품질과 서비스로 안전한 드라이빙을 약속합니다.",
 };
 
