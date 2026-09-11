@@ -46,7 +46,7 @@ export default function MainBanner() {
   }, [activeBanners.length]);
 
   return (
-    <div className="w-full relative h-[280px] md:h-[500px] overflow-hidden flex flex-col justify-start items-center pt-16 md:pt-32">
+    <div className="w-full relative h-[224px] md:h-[400px] overflow-hidden flex flex-col justify-start items-center pt-16 md:pt-32">
       {activeBanners.map((banner, idx) => (
         <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 z-0 ${current === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <img src={banner.img} alt={`배너 ${idx + 1}`} className="w-full h-full object-fill object-center" />
