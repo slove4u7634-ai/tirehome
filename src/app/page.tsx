@@ -5,7 +5,6 @@ import SearchForm from '@/components/SearchForm';
 import WeeklyBest from '@/components/WeeklyBest';
 import MonthlyBest from '@/components/MonthlyBest';
 import MdPick from '@/components/MdPick';
-import VisitGuide from '@/components/VisitGuide';
 import Link from 'next/link';
 import { EVENTS_DATA } from '@/lib/events';
 
@@ -45,7 +44,7 @@ export default async function Home() {
         </section>
 
         <div className="w-full mt-6 md:mt-8">
-          <VisitGuide />
+          <img src="/img/main.jpg" alt="방문 및 장착방법 안내" className="w-full h-auto rounded-xl shadow-md" />
         </div>
       </div>
 
