@@ -42,6 +42,10 @@ export default async function Home() {
         <section className="relative z-30 mt-6">
           <SearchForm />
         </section>
+
+        <div className="w-full mt-6 md:mt-8">
+          <img src="/img/main.jpg" alt="메인 프로모션" className="w-full rounded-xl shadow-md object-cover" />
+        </div>
       </div>
 
       <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
