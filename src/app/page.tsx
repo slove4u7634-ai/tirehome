@@ -44,7 +44,7 @@ export default async function Home() {
         </section>
 
         <div className="w-full mt-6 md:mt-8">
-          <img src="/img/main.jpg" alt="방문 및 장착방법 안내" className="w-full max-h-[350px] object-cover rounded-xl shadow-md" />
+          <img src="/img/main.jpg" alt="방문 및 장착방법 안내" className="w-full h-auto rounded-xl shadow-md" />
         </div>
       </div>
 
