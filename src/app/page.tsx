@@ -44,14 +44,14 @@ export default async function Home() {
         </section>
       </div>
 
-      <div className="mt-6 md:mt-10 pb-16 md:pb-0">
-        <MonthlyBest />
-        <WeeklyBest />
-        <MdPick />
+      <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
+        <div className="mt-6 md:mt-10 pb-16 md:pb-0 flex flex-col gap-8 md:gap-12">
+          <MonthlyBest />
+          <WeeklyBest />
+          <MdPick />
 
-        <section className="py-8 md:py-16 bg-white overflow-hidden my-4 md:my-10">
-          <div className="max-w-[1240px] mx-auto">
-            <div className="px-4 md:px-8 flex items-end justify-between mb-6 md:mb-10">
+          <section className="py-8 md:py-12 bg-white overflow-hidden">
+            <div className="flex items-end justify-between mb-6 md:mb-10">
               <div>
                 <Link href="/events" className="flex items-center gap-2 mb-1 group">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-7 h-7 text-orange-500 transition-transform group-hover:scale-110">
@@ -67,15 +67,15 @@ export default async function Home() {
                 전체보기 &gt;
               </Link>
             </div>
-            <div className="flex overflow-x-auto gap-4 px-4 pb-4 scrollbar-hide">
+            <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
               {events.map((event) => (
                 <Link href={`/events/${event.id}`} key={event.id} className="block shrink-0 transition-transform hover:-translate-y-1">
                   <img src={event.image} alt={event.title} className="w-[85vw] md:w-[400px] h-[150px] object-cover rounded-xl shadow-md border border-gray-100" />
                 </Link>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -23,11 +23,11 @@ export default function MonthlyBest() {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-16 bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 overflow-hidden relative shadow-inner">
+    <section className="py-10 md:py-16 bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 overflow-hidden relative shadow-inner rounded-2xl">
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl mix-blend-screen pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl mix-blend-screen pointer-events-none"></div>
       
-      <div className="max-w-[1200px] mx-auto px-4 lg:px-8 relative z-10">
+      <div className="w-full mx-auto px-4 lg:px-8 relative z-10">
         <div className="flex flex-col items-center justify-center mb-10 group text-center">
           <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center gap-3 drop-shadow-md">
             ✨ 이달의 추천 상품

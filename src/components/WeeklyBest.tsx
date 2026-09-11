@@ -21,8 +21,10 @@ export default function WeeklyBest() {
   }, []);
 
   return (
-    <section className="py-12 border-b border-gray-100 last:border-0 overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-4 lg:px-8">
+    <section className="py-10 md:py-16 bg-gradient-to-r from-orange-50 via-white to-orange-50 relative overflow-hidden rounded-2xl border border-gray-100">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"></div>
+      
+      <div className="w-full mx-auto px-4 lg:px-8 relative z-10">
         <div className="flex items-end justify-between mb-8 group">
           <div>
             <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight flex items-center gap-3">

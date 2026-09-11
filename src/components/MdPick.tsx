@@ -23,10 +23,10 @@ export default function MdPick() {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-zinc-950 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-zinc-950 relative overflow-hidden rounded-2xl">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[300px] bg-orange-600/10 blur-[120px] pointer-events-none"></div>
       
-      <div className="max-w-[1200px] mx-auto px-4 lg:px-8 relative z-10">
+      <div className="w-full mx-auto px-4 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row items-end justify-between mb-12 group">
           <div>
             <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter flex items-center gap-4">
