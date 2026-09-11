@@ -46,16 +46,19 @@ export default function MainBanner() {
   }, [activeBanners.length]);
 
   return (
-    <div className="w-full relative h-[280px] md:h-[500px] overflow-hidden flex flex-col justify-start items-center pt-16 md:pt-32">
+    <div className="w-full relative overflow-hidden flex flex-col justify-center items-center">
+      {/* 1번 배너의 비율을 맞춰주기 위한 투명 이미지 */}
+      <img src={activeBanners[0]?.img} alt="placeholder" className="w-full h-auto opacity-0 pointer-events-none" />
+
       {activeBanners.map((banner, idx) => (
         <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 z-0 ${current === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <img src={banner.img} alt={`배너 ${idx + 1}`} className="w-full h-full object-contain object-center" />
-          <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
+          <img src={banner.img} alt={`배너 ${idx + 1}`} className="w-full h-full object-cover object-center" />
+          <div className="absolute inset-0 bg-black/30 pointer-events-none"></div>
         </div>
       ))}
       
-      <div className="relative z-20 text-center px-4 animate-in fade-in slide-in-from-top duration-1000">
-        <h2 className="text-3xl md:text-6xl font-black text-white drop-shadow-2xl tracking-tight leading-tight transition-all">
+      <div className="absolute inset-0 flex flex-col justify-center items-center z-20 text-center px-4 animate-in fade-in slide-in-from-top duration-1000 pointer-events-none">
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-2xl tracking-tight leading-tight transition-all">
           {activeBanners[current]?.title1} <br className="md:hidden" />
           <span className="text-orange-500 font-black">{activeBanners[current]?.title2}</span>
         </h2>
