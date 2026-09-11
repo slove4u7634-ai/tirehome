@@ -726,6 +726,9 @@ export default function AdminDashboardPage() {
                     <option value="HANKOOK">한국타이어</option>
                     <option value="NEXEN">넥센타이어</option>
                     <option value="MICHELIN">미쉐린</option>
+                    <option value="CONTINENTAL">콘티넨탈</option>
+                    <option value="BRIDGESTONE">브리지스톤</option>
+                    <option value="PIRELLI">피렐리</option>
                   </select>
                 </div>
                 <div>
@@ -745,9 +748,31 @@ export default function AdminDashboardPage() {
                   <label className="block text-sm font-bold text-gray-700 mb-1">서브타이틀</label>
                   <input type="text" value={newProdSubtitle} onChange={(e) => setNewProdSubtitle(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 사계절용 프리미엄 컴포트 타이어" />
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">특징 태그 (콤마로 구분)</label>
-                  <input type="text" value={newProdFeatures} onChange={(e) => setNewProdFeatures(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="예: 사계절용, 저소음" />
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-gray-700 mb-2">특징 태그 (다중 선택 가능)</label>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {["사계절용", "겨울용", "여름용", "스포츠형", "컴포트형", "저소음", "런플랫", "수입차용", "OEM"].map(tag => {
+                      const currentTags = newProdFeatures.split(',').map(t => t.trim()).filter(Boolean);
+                      const isSelected = currentTags.includes(tag);
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => {
+                            if (isSelected) {
+                              setNewProdFeatures(currentTags.filter(t => t !== tag).join(', '));
+                            } else {
+                              setNewProdFeatures([...currentTags, tag].join(', '));
+                            }
+                          }}
+                          className={`px-3 py-1.5 text-sm rounded-full font-bold transition-colors ${isSelected ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                        >
+                          {tag}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <input type="text" value={newProdFeatures} onChange={(e) => setNewProdFeatures(e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 text-sm bg-gray-50" placeholder="직접 입력 (콤마로 구분)" />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">사이즈</label>
