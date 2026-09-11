@@ -65,7 +65,7 @@ export default async function Home() {
                     이벤트 / 혜택
                   </h2>
                 </Link>
-                <p className="text-gray-400 font-bold text-sm">타이어몰 회원만을 위한 매주 특별한 선물</p>
+                <p className="text-gray-400 font-bold text-sm">타이어투데이 고객님들을 위한 아주 특별한 선물</p>
               </div>
               <Link className="flex items-center gap-1 text-gray-400 hover:text-orange-500 font-bold text-sm transition-all" href="/events">
                 전체보기 &gt;

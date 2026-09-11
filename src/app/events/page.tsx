@@ -37,7 +37,7 @@ export default async function EventsPage() {
           <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-3 tracking-tighter">
             이벤트 / 혜택
           </h1>
-          <p className="text-gray-400 font-bold text-sm md:text-base">티어몰 회원님들을 위한 아주 특별한 선물</p>
+          <p className="text-gray-400 font-bold text-sm md:text-base">타이어투데이 고객님들을 위한 아주 특별한 선물</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom duration-700 delay-150">
