@@ -28,14 +28,7 @@ export default function Header() {
             {/* 좌측 영역: 로고 */}
             <div className="flex-shrink-0 flex items-center">
               <Link className="flex items-center group" href="/">
-                <div className="flex flex-col items-start leading-none pt-1">
-                  <div className="flex items-center gap-0.5">
-                    <span className="text-3xl md:text-5xl font-black text-[#1B3A8C] tracking-tighter" style={{ fontFamily: 'Arial Black, sans-serif' }}>TIRE</span>
-                    <span className="text-3xl md:text-5xl font-black text-white bg-[#F5C400] px-1 md:px-2 pb-1 md:pb-1.5 pt-0.5 md:pt-1 italic tracking-tighter shadow-sm" style={{ fontFamily: 'Arial Black, sans-serif' }}>TO</span>
-                    <span className="text-3xl md:text-5xl font-black text-[#1B3A8C] tracking-tighter" style={{ fontFamily: 'Arial Black, sans-serif' }}>DAY</span>
-                  </div>
-                  <span className="text-xs md:text-sm font-bold text-[#1B3A8C] tracking-[0.1em] pl-0.5 mt-1 md:mt-1.5" style={{ fontFamily: 'Arial, sans-serif' }}>타이어투데이</span>
-                </div>
+                <img src="/logo.jpg" alt="타이어투데이 로고" className="h-10 md:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105 mix-blend-multiply" />
               </Link>
             </div>
 

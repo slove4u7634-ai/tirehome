@@ -9,8 +9,7 @@ export default function Footer() {
             
             <div className="md:col-span-2 flex justify-between items-center md:block">
               <div className="flex items-center gap-2 md:gap-4 mb-0 md:mb-6">
-                <img src="/logo.jpg" alt="타이어투데이 로고" className="h-6 md:h-20 w-auto object-contain" />
-                <span className="text-base md:text-4xl font-black text-white tracking-tight leading-none">타이어투데이</span>
+                <img src="/logo.jpg" alt="타이어투데이 로고" className="h-10 md:h-20 w-auto object-contain rounded bg-white p-1" />
               </div>
               
               <p className="hidden md:block text-sm leading-relaxed mb-6 max-w-sm">
