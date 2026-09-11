@@ -42,7 +42,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     <div className="flex-1 bg-white">
       {/* 빵판 (Breadcrumb) */}
       <div className="border-b border-gray-100 py-4 mb-4 md:mb-10">
-        <div className="container mx-auto px-4 lg:px-8 max-w-[1240px] flex gap-2 text-sm text-gray-400 font-medium">
+        <div className="container mx-auto px-4 lg:px-8 max-w-[1600px] flex gap-2 text-sm text-gray-400 font-medium">
           <Link href="/" className="hover:text-gray-900">홈</Link>
           <span>&gt;</span>
           <Link href="/brands" className="hover:text-gray-900">브랜드별 타이어</Link>
@@ -51,7 +51,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1240px] pb-16 md:pb-24">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1600px] pb-16 md:pb-24">
         
         {/* 상단: 이미지 & 구매 정보 */}
         <div className="flex flex-col md:flex-row gap-10 lg:gap-16 mb-24 animate-in fade-in slide-in-from-bottom duration-500">

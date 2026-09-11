@@ -29,7 +29,7 @@ export default async function EventsPage() {
 
   return (
     <div className="flex-1 bg-white py-12 md:py-20">
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1240px]">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1600px]">
         <div className="flex flex-col items-center justify-center text-center mb-12 animate-in fade-in slide-in-from-bottom duration-700">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-12 h-12 text-orange-500 mb-2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />

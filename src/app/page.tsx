@@ -34,7 +34,7 @@ export default async function Home() {
   }
   return (
     <div className="flex-1 bg-white">
-      <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
+      <div className="mx-auto w-full max-w-[1600px] px-4 md:px-8">
         <div className="w-full relative bg-gray-900 border-none rounded-xl overflow-hidden mt-2 shadow-lg">
           <MainBanner />
         </div>
@@ -48,7 +48,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
+      <div className="mx-auto w-full max-w-[1600px] px-4 md:px-8">
         <div className="mt-6 md:mt-10 pb-16 md:pb-0 flex flex-col gap-8 md:gap-12">
           <MonthlyBest />
           <WeeklyBest />

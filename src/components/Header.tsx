@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <header className="bg-white sticky top-0 z-50">
-      <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
+      <div className="mx-auto w-full max-w-[1600px] px-4 md:px-8">
         <div className="flex flex-col w-full">
           
           {/* 상단 1열: 로고(좌측), 검색창 및 관리자(우측) */}
