@@ -33,6 +33,7 @@ export default function AdminDashboardPage() {
   const [newBannerDesc, setNewBannerDesc] = useState('');
   const [newBannerImg, setNewBannerImg] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [newInquiryPayload, setNewInquiryPayload] = useState<any>(null);
 
   // Product state
   const [newProdBrand, setNewProdBrand] = useState('KUMHO');
@@ -260,6 +261,14 @@ export default function AdminDashboardPage() {
       } catch (e) {
         // Fallback
       }
+    } else if (type === 'inquiry') {
+      try {
+        const data = JSON.parse((post as any).content || '{}');
+        setNewInquiryPayload(data);
+        setNewContent(data.reply || '');
+      } catch (e) {
+        setNewContent('');
+      }
     } else {
       setNewContent((post as any).content || '');
     }
@@ -414,6 +423,9 @@ export default function AdminDashboardPage() {
     } else if (type === 'banner') {
       finalTitle = newBannerTitle1 || '메인 배너';
       finalContent = JSON.stringify({ img: newBannerImg, title1: newBannerTitle1, title2: newBannerTitle2, desc: newBannerDesc });
+    } else if (type === 'inquiry') {
+      const updatedPayload = { ...(newInquiryPayload || {}), reply: newContent };
+      finalContent = JSON.stringify(updatedPayload);
     }
     
     if (editingId) {
@@ -657,7 +669,13 @@ export default function AdminDashboardPage() {
             onClick={() => { setType('product'); handleCancelEdit(); }}
             className={`px-4 py-2 font-bold rounded-lg ${type === 'product' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
           >
-            상품 등록 관리
+            상품 목록 관리
+          </button>
+          <button 
+            onClick={() => { setType('inquiry'); handleCancelEdit(); }}
+            className={`px-4 py-2 font-bold rounded-lg ${type === 'inquiry' ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}`}
+          >
+            1:1 문의 관리
           </button>
           <button 
             onClick={() => { setType('review'); handleCancelEdit(); }}
@@ -977,6 +995,11 @@ export default function AdminDashboardPage() {
                         <option value="공지">공지</option>
                         <option value="이벤트">이벤트</option>
                       </>
+                    ) : type === 'inquiry' ? (
+                      <>
+                        <option value="답변대기">답변대기</option>
+                        <option value="답변완료">답변완료</option>
+                      </>
                     ) : (
                       <>
                         <option value="타이어">타이어</option>
@@ -998,13 +1021,19 @@ export default function AdminDashboardPage() {
                   />
                 </div>
               </div>
+              {type === 'inquiry' && newInquiryPayload && (
+                <div className="bg-gray-100 p-4 rounded-lg mb-2">
+                  <div className="font-bold mb-1 text-sm text-gray-700">고객 문의 내용 (작성자: {newInquiryPayload.author})</div>
+                  <div className="text-gray-900 whitespace-pre-wrap text-sm">{newInquiryPayload.body}</div>
+                </div>
+              )}
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">게시글 내용</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">{type === 'inquiry' ? '답변 작성' : '게시글 내용'}</label>
                 <textarea 
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg h-32 resize-none focus:outline-none focus:border-orange-500"
-                  placeholder="내용을 입력하세요..."
+                  placeholder={type === 'inquiry' ? '답변 내용을 입력하세요...' : '내용을 입력하세요...'}
                 ></textarea>
               </div>
             </>
