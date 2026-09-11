@@ -164,6 +164,12 @@ export default function ReservationCheckPage() {
                         <span className="font-bold text-zinc-500 mr-2">예약차량</span> 
                         {res.customer?.car} ({res.customer?.carNumber})
                       </div>
+                      <div className="mt-4 pt-3 border-t border-zinc-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-1">
+                        <div className="text-zinc-400 text-xs">현금/카드동일(VAT포함)</div>
+                        <div className="text-lg font-black text-white">
+                          결제예정금액: <span className="text-[#FF4500] text-xl ml-1">{res.product?.totalPrice ? res.product.totalPrice.toLocaleString() : '0'}</span>원
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
