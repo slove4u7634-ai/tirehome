@@ -76,6 +76,7 @@ export default function Header() {
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/events">이벤트 / 혜택</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/cs">고객센터</Link>
             <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/reviews">장착후기</Link>
+            <Link className="text-2xl font-bold text-gray-700 hover:text-orange-500 transition-colors whitespace-nowrap" href="/reservation/check">예약확인</Link>
           </nav>
         </div>
       </div>
