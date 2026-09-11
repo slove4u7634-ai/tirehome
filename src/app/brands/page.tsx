@@ -142,16 +142,16 @@ export default function BrandsPage() {
         </div>
 
         {/* 필터 옵션 영역 */}
-        <div className="border border-gray-200 rounded-xl mb-8">
+        <div className="border border-gray-200 rounded-xl mb-8 overflow-hidden">
           {/* 브랜드 필터 */}
           <div className="flex flex-col md:flex-row border-b border-gray-100">
-            <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
-              <span className="font-bold text-sm text-orange-500">타이어 브랜드</span>
+            <div className="bg-gray-50 md:w-32 py-2 px-4 md:p-4 flex items-center justify-start md:justify-center border-b md:border-b-0 md:border-r border-gray-100 shrink-0">
+              <span className="font-bold text-xs md:text-sm text-orange-500">타이어 브랜드</span>
             </div>
-            <div className="p-4 flex flex-wrap gap-2 flex-1">
+            <div className="p-3 md:p-4 flex overflow-x-auto gap-2 flex-1 scrollbar-hide whitespace-nowrap">
               <button 
                 onClick={() => setSelectedBrand("ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                className={`shrink-0 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full border text-[11px] md:text-sm font-bold transition-colors ${selectedBrand === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
               >
                 #전체
               </button>
@@ -159,7 +159,7 @@ export default function BrandsPage() {
                 <button 
                   key={b.eng}
                   onClick={() => setSelectedBrand(b.eng)}
-                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedBrand === b.eng ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                  className={`shrink-0 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full border text-[11px] md:text-sm font-bold transition-colors ${selectedBrand === b.eng ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   #{b.kor}
                 </button>
@@ -169,13 +169,13 @@ export default function BrandsPage() {
           
           {/* 차종 필터 */}
           <div className="flex flex-col md:flex-row border-b border-gray-100">
-            <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
-              <span className="font-bold text-sm text-gray-700">차종</span>
+            <div className="bg-gray-50 md:w-32 py-2 px-4 md:p-4 flex items-center justify-start md:justify-center border-b md:border-b-0 md:border-r border-gray-100 shrink-0">
+              <span className="font-bold text-xs md:text-sm text-gray-700">차종</span>
             </div>
-            <div className="p-4 flex flex-wrap gap-2 flex-1">
+            <div className="p-3 md:p-4 flex overflow-x-auto gap-2 flex-1 scrollbar-hide whitespace-nowrap">
               <button 
                 onClick={() => setSelectedCategory("ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                className={`shrink-0 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full border text-[11px] md:text-sm font-bold transition-colors ${selectedCategory === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
               >
                 #전체
               </button>
@@ -183,7 +183,7 @@ export default function BrandsPage() {
                 <button 
                   key={c}
                   onClick={() => setSelectedCategory(c)}
-                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedCategory === c ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                  className={`shrink-0 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full border text-[11px] md:text-sm font-bold transition-colors ${selectedCategory === c ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   #{c}
                 </button>
@@ -193,13 +193,13 @@ export default function BrandsPage() {
 
           {/* 특장점 필터 */}
           <div className="flex flex-col md:flex-row">
-            <div className="bg-gray-50 md:w-32 p-4 flex items-center justify-center border-r border-gray-100 shrink-0">
-              <span className="font-bold text-sm text-gray-700">특장점</span>
+            <div className="bg-gray-50 md:w-32 py-2 px-4 md:p-4 flex items-center justify-start md:justify-center border-b md:border-b-0 md:border-r border-gray-100 shrink-0">
+              <span className="font-bold text-xs md:text-sm text-gray-700">특장점</span>
             </div>
-            <div className="p-4 flex flex-wrap gap-2 flex-1">
+            <div className="p-3 md:p-4 flex overflow-x-auto gap-2 flex-1 scrollbar-hide whitespace-nowrap">
               <button 
                 onClick={() => setSelectedFeature("ALL")}
-                className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                className={`shrink-0 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full border text-[11px] md:text-sm font-bold transition-colors ${selectedFeature === "ALL" ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
               >
                 #전체
               </button>
@@ -207,16 +207,16 @@ export default function BrandsPage() {
                 <button 
                   key={f}
                   onClick={() => setSelectedFeature(f)}
-                  className={`px-4 py-1.5 rounded-full border text-sm font-bold transition-colors ${selectedFeature === f ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                  className={`shrink-0 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full border text-[11px] md:text-sm font-bold transition-colors ${selectedFeature === f ? "border-orange-500 text-orange-500 bg-orange-50" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   #{f}
                 </button>
               ))}
             </div>
-            <div className="p-4 flex items-center justify-end border-t md:border-t-0 md:border-l border-gray-100">
+            <div className="p-3 md:p-4 flex items-center justify-end md:border-l border-gray-100 bg-gray-50 md:bg-white border-t md:border-t-0">
               <button 
                 onClick={() => { setSelectedBrand("ALL"); setSelectedCategory("ALL"); setSelectedFeature("ALL"); setSearchSize(""); }}
-                className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-sm font-bold"
+                className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-[11px] md:text-sm font-bold"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -229,27 +229,29 @@ export default function BrandsPage() {
 
         {/* 정렬 및 뷰 모드 툴바 */}
         <div className="flex justify-between items-end border-b-2 border-black pb-3 mb-6">
-          <div className="text-sm text-gray-500 font-bold">
+          <div className="hidden md:block text-sm text-gray-500 font-bold">
             총 <span className="text-orange-500">{filteredProducts.length}</span>개의 상품이 있습니다.
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex gap-3 text-sm font-bold">
-              <button onClick={() => setSortOption("low_price")} className={sortOption === 'low_price' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}>낮은 가격순</button>
-              <button onClick={() => setSortOption("high_discount")} className={sortOption === 'high_discount' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}>할인율 높은순</button>
-              <button onClick={() => setSortOption("recommend")} className={sortOption === 'recommend' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}>추천순</button>
+          <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+            <div className="flex gap-4 md:gap-3 text-sm font-bold whitespace-nowrap overflow-x-auto scrollbar-hide">
+              <button onClick={() => setSortOption("low_price")} className={sortOption === 'low_price' ? 'text-black shrink-0' : 'text-gray-400 hover:text-gray-600 shrink-0'}>낮은 가격순</button>
+              <button onClick={() => setSortOption("high_discount")} className={sortOption === 'high_discount' ? 'text-black shrink-0' : 'text-gray-400 hover:text-gray-600 shrink-0'}>할인율 높은순</button>
+              <button onClick={() => setSortOption("recommend")} className={sortOption === 'recommend' ? 'text-black shrink-0' : 'text-gray-400 hover:text-gray-600 shrink-0'}>추천순</button>
             </div>
-            <div className="w-px h-4 bg-gray-300 mx-2"></div>
-            <div className="flex gap-2">
-              <button onClick={() => setViewMode('grid')} className={viewMode === 'grid' ? 'text-orange-500' : 'text-gray-300 hover:text-gray-500'}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                  <path fillRule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clipRule="evenodd" />
-                </svg>
-              </button>
-              <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'text-orange-500' : 'text-gray-300 hover:text-gray-500'}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                  <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
-                </svg>
-              </button>
+            <div className="flex items-center shrink-0">
+              <div className="hidden md:block w-px h-4 bg-gray-300 mx-2"></div>
+              <div className="flex gap-2 pl-2 md:pl-0 border-l border-gray-200 md:border-none">
+                <button onClick={() => setViewMode('grid')} className={viewMode === 'grid' ? 'text-orange-500' : 'text-gray-300 hover:text-gray-500'}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path fillRule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                <button onClick={() => setViewMode('list')} className={viewMode === 'list' ? 'text-orange-500' : 'text-gray-300 hover:text-gray-500'}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
