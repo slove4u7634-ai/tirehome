@@ -58,41 +58,35 @@ export default function ReservationCheckPage() {
   };
 
   return (
-    <div className="min-h-[800px] bg-zinc-950 py-16 px-4 flex flex-col items-center relative overflow-hidden">
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
-      <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[150%] bg-gradient-to-r from-transparent via-[#d4af37]/5 to-transparent transform rotate-45"></div>
-        <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[150%] bg-gradient-to-r from-transparent via-[#d4af37]/5 to-transparent transform rotate-45"></div>
-      </div>
-
-      <div className="relative z-10 w-full max-w-3xl">
-        <div className="bg-black/80 backdrop-blur-md border border-[#d4af37]/30 p-8 md:p-12 shadow-2xl">
+    <div className="min-h-[800px] bg-gray-50 py-16 px-4 flex flex-col items-center relative">
+      <div className="relative w-full max-w-3xl">
+        <div className="bg-white border border-gray-200 p-8 md:p-12 shadow-sm rounded-xl">
           <div className="text-center mb-10">
-            <h1 className="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">타이어투데이 방문장착예약 확인</h1>
-            <p className="text-zinc-400 text-sm md:text-base">예약 신청 시 등록하신 이름(예약자명)과 휴대폰번호를 입력하세요</p>
+            <h1 className="text-2xl md:text-3xl font-black text-gray-900 mb-3 tracking-tight">방문장착 예약 확인</h1>
+            <p className="text-gray-500 text-sm md:text-base">예약 신청 시 등록하신 이름(예약자명)과 휴대폰번호를 입력하세요</p>
           </div>
 
           <form onSubmit={handleSearch} className="max-w-xl mx-auto">
-            <div className="border border-zinc-800 p-6 md:p-8 space-y-6 bg-black/40">
+            <div className="border border-gray-200 p-6 md:p-8 space-y-6 bg-gray-50 rounded-lg">
               
               <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                <label className="text-zinc-300 font-bold text-sm md:w-24 shrink-0">예약자명</label>
+                <label className="text-gray-700 font-bold text-sm md:w-24 shrink-0">예약자명</label>
                 <input 
                   type="text" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="홍길동"
-                  className="flex-1 bg-zinc-900 border border-zinc-800 text-white p-3 rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors"
+                  className="flex-1 bg-white border border-gray-300 text-gray-900 p-3 rounded-md focus:outline-none focus:border-orange-500 transition-colors"
                 />
               </div>
 
               <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                <label className="text-zinc-300 font-bold text-sm md:w-24 shrink-0">휴대폰번호</label>
+                <label className="text-gray-700 font-bold text-sm md:w-24 shrink-0">휴대폰번호</label>
                 <div className="flex-1 flex items-center gap-2">
                   <select 
                     value={phone1}
                     onChange={(e) => setPhone1(e.target.value)}
-                    className="w-[30%] bg-zinc-900 border border-zinc-800 text-white p-3 rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors"
+                    className="w-[30%] bg-white border border-gray-300 text-gray-900 p-3 rounded-md focus:outline-none focus:border-orange-500 transition-colors"
                   >
                     <option value="010">010</option>
                     <option value="011">011</option>
@@ -106,14 +100,14 @@ export default function ReservationCheckPage() {
                     maxLength={4}
                     value={phone2}
                     onChange={(e) => setPhone2(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="w-[35%] bg-zinc-900 border border-zinc-800 text-white p-3 text-center rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors"
+                    className="w-[35%] bg-white border border-gray-300 text-gray-900 p-3 text-center rounded-md focus:outline-none focus:border-orange-500 transition-colors"
                   />
                   <input 
                     type="text" 
                     maxLength={4}
                     value={phone3}
                     onChange={(e) => setPhone3(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="w-[35%] bg-zinc-900 border border-zinc-800 text-white p-3 text-center rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors"
+                    className="w-[35%] bg-white border border-gray-300 text-gray-900 p-3 text-center rounded-md focus:outline-none focus:border-orange-500 transition-colors"
                   />
                 </div>
               </div>
@@ -124,7 +118,7 @@ export default function ReservationCheckPage() {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="bg-[#FF4500] hover:bg-[#E63E00] text-white font-bold py-4 px-16 rounded-md shadow-lg transition-colors flex items-center gap-2 disabled:opacity-70 text-lg"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-16 rounded-md shadow-md transition-colors flex items-center gap-2 disabled:opacity-70 text-lg"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                   <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
@@ -135,39 +129,39 @@ export default function ReservationCheckPage() {
           </form>
 
           {reservations !== null && (
-            <div className="mt-12 bg-zinc-900/80 p-6 border border-zinc-800">
-              <h2 className="text-xl font-bold text-white mb-4 border-b border-zinc-700 pb-2">조회 결과 ({reservations.length}건)</h2>
+            <div className="mt-12 bg-gray-50 p-6 border border-gray-200 rounded-lg">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">조회 결과 ({reservations.length}건)</h2>
               
               {reservations.length === 0 ? (
-                <div className="text-center py-10 text-zinc-500">
+                <div className="text-center py-10 text-gray-500">
                   입력하신 정보로 조회된 예약 내역이 없습니다.
                 </div>
               ) : (
                 <div className="space-y-4">
                   {reservations.map((res: any) => (
-                    <div key={res.id} className="bg-zinc-800 p-5 border border-zinc-700 rounded-sm">
+                    <div key={res.id} className="bg-white p-5 border border-gray-200 rounded-md shadow-sm">
                       <div className="flex justify-between items-start mb-3">
-                        <div className="text-sm text-zinc-400">접수일: {new Date(res.createdAt).toLocaleString()}</div>
+                        <div className="text-sm text-gray-500">접수일: {new Date(res.createdAt).toLocaleString()}</div>
                         <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${getStatusColor(res.status)}`}>
                           {getStatusText(res.status)}
                         </span>
                       </div>
-                      <div className="text-white mb-2">
-                        <span className="font-bold text-[#d4af37] mr-2">예약상품</span> 
+                      <div className="text-gray-900 mb-2">
+                        <span className="font-bold text-orange-500 mr-2">예약상품</span> 
                         {res.product?.name} ({res.product?.size}) - {res.product?.qty}개
                       </div>
-                      <div className="text-zinc-300 text-sm">
-                        <span className="font-bold text-zinc-500 mr-2">방문일시</span> 
+                      <div className="text-gray-600 text-sm">
+                        <span className="font-bold text-gray-700 mr-2">방문일시</span> 
                         {res.schedule?.date} {res.schedule?.time}
                       </div>
-                      <div className="text-zinc-300 text-sm mt-1">
-                        <span className="font-bold text-zinc-500 mr-2">예약차량</span> 
+                      <div className="text-gray-600 text-sm mt-1">
+                        <span className="font-bold text-gray-700 mr-2">예약차량</span> 
                         {res.customer?.car} ({res.customer?.carNumber})
                       </div>
-                      <div className="mt-4 pt-3 border-t border-zinc-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-1">
-                        <div className="text-zinc-400 text-xs">현금/카드동일(VAT포함)</div>
-                        <div className="text-lg font-black text-white">
-                          결제예정금액: <span className="text-[#FF4500] text-xl ml-1">{res.product?.totalPrice ? res.product.totalPrice.toLocaleString() : '0'}</span>원
+                      <div className="mt-4 pt-3 border-t border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-1">
+                        <div className="text-gray-500 text-xs font-medium">현금/카드동일(VAT포함)</div>
+                        <div className="text-lg font-black text-gray-900">
+                          결제예정금액: <span className="text-orange-500 text-xl ml-1">{res.product?.totalPrice ? res.product.totalPrice.toLocaleString() : '0'}</span>원
                         </div>
                       </div>
                     </div>
