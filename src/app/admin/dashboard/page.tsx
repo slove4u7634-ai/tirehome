@@ -218,7 +218,11 @@ export default function AdminDashboardPage() {
       fetchProducts();
     } else {
       await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
-      fetchPosts();
+      if (type === 'reservation') {
+        fetchReservations();
+      } else {
+        fetchPosts();
+      }
     }
   };
 
@@ -1140,8 +1144,9 @@ export default function AdminDashboardPage() {
                           <option value="cancelled">취소됨</option>
                         </select>
                       </td>
-                      <td className="p-3">
-                        <button onClick={() => alert('남기실말씀: ' + r.options.message + '\n휠얼라인먼트: ' + (r.options.alignment ? '요청함' : '안함'))} className="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 text-xs font-bold">상세보기</button>
+                      <td className="p-3 whitespace-nowrap space-x-2">
+                        <button onClick={() => alert('남기실말씀: ' + r.options.message + '\n휠얼라인먼트: ' + (r.options.alignment ? '요청함' : '안함'))} className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 text-xs font-bold transition-colors">상세보기</button>
+                        <button onClick={() => handleDelete(r.id)} className="px-3 py-1.5 bg-red-50 text-red-500 rounded hover:bg-red-100 text-xs font-bold transition-colors">삭제</button>
                       </td>
                     </tr>
                   ))}
