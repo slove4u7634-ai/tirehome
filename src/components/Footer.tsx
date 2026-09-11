@@ -2,10 +2,11 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-16 mt-auto">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-800 pb-12 mb-8">
-          <div className="md:col-span-2">
+    <div className="w-full mx-auto max-w-[1240px] px-4 md:px-8 pb-8">
+      <footer className="bg-gray-900 text-gray-400 py-12 px-6 md:px-12 rounded-2xl mt-auto shadow-lg">
+        <div className="w-full mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-800 pb-10 mb-8">
+            <div className="md:col-span-2">
             <div className="flex items-center gap-4 mb-6">
               <img src="/logo.jpg" alt="타이어투데이 로고" className="h-14 md:h-20 w-auto object-contain" />
               <span className="text-3xl md:text-4xl font-black text-white tracking-tight leading-none">타이어투데이</span>
@@ -41,7 +42,8 @@ export default function Footer() {
           <p>상호: 타이어몰 | 대표: 아무개 | 사업자등록번호: 123-45-67890</p>
           <p className="mt-2 md:mt-0">© 2026 타이어몰. All rights reserved.</p>
         </div>
-      </div>
-    </footer>
+        </div>
+      </footer>
+    </div>
   );
 }
