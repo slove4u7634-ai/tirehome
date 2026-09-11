@@ -28,7 +28,7 @@ export default function Header() {
             {/* 좌측 영역: 로고 */}
             <div className="flex-shrink-0 flex items-center">
               <Link className="flex items-center group" href="/">
-                <img src="/logo.jpg" alt="타이어투데이 로고" className="h-10 md:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105 mix-blend-multiply" />
+                <img src="/logo.jpg" alt="타이어투데이 로고" className="h-14 md:h-20 lg:h-24 w-auto transition-transform group-hover:scale-105 mix-blend-multiply" />
               </Link>
             </div>
 
