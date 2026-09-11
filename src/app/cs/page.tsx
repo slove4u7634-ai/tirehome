@@ -31,10 +31,16 @@ export default function CustomerServicePage() {
   const [newInquiryContent, setNewInquiryContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
+  const totalPages = Math.ceil(posts.length / ITEMS_PER_PAGE);
+  const paginatedPosts = posts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
   useEffect(() => {
     setIsLoading(true);
     setExpandedId(null);
     setIsWritingInquiry(false);
+    setCurrentPage(1);
     fetch(`/api/posts?type=${activeTab}`)
       .then(res => res.json())
       .then(data => {
@@ -317,7 +323,7 @@ export default function CustomerServicePage() {
                 ) : posts.length === 0 ? (
                   <div className="p-8 text-center text-gray-500 font-bold">등록된 게시글이 없습니다.</div>
                 ) : (
-                  posts.map((item) => (
+                  paginatedPosts.map((item) => (
                     <div key={item.id}>
                       <div 
                         onClick={() => handlePostClick(item)}
@@ -415,12 +421,35 @@ export default function CustomerServicePage() {
             )}
 
             {/* 페이지네이션 */}
-            {!isWritingInquiry && (
+            {!isWritingInquiry && totalPages > 1 && (
               <div className="flex justify-center gap-2 mt-8">
-                <button className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:border-orange-500 hover:text-orange-500 transition-colors font-bold">&lt;</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-md bg-orange-500 text-white font-bold shadow-md shadow-orange-500/30">1</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:border-orange-500 hover:text-orange-500 transition-colors font-bold">2</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:border-orange-500 hover:text-orange-500 transition-colors font-bold">&gt;</button>
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:border-orange-500 hover:text-orange-500 transition-colors font-bold disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:text-gray-500"
+                >
+                  &lt;
+                </button>
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button 
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`w-8 h-8 flex items-center justify-center rounded-md font-bold transition-colors ${
+                      currentPage === i + 1 
+                        ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' 
+                        : 'border border-gray-200 text-gray-500 hover:border-orange-500 hover:text-orange-500'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:border-orange-500 hover:text-orange-500 transition-colors font-bold disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:text-gray-500"
+                >
+                  &gt;
+                </button>
               </div>
             )}
           </div>
