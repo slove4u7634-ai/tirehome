@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="mx-auto w-full max-w-[1200px] px-6">
+      <div className="mx-auto w-full max-w-[1240px] px-4 md:px-8">
         <div className="flex flex-col w-full">
           
           {/* 상단 1열: 로고(좌측), 검색창 및 관리자(우측) */}
@@ -92,8 +92,8 @@ export default function Header() {
       </div>
       
       {/* 최하단 풀위드스 빨간 배너 */}
-      <div className="w-full bg-[#E61E4D] text-white py-3 text-center flex items-center justify-center border-t border-[#E61E4D]">
-        <span className="text-sm md:text-base font-bold tracking-tight">
+      <div className="w-full bg-gradient-to-r from-red-600 via-rose-500 to-purple-600 animate-gradient-x bg-[length:200%_200%] text-white py-3 text-center flex items-center justify-center border-t border-white/10">
+        <span className="text-sm md:text-base font-black tracking-tight shimmer-text">
           ⚡ [타이어 최저가 선언] 대한민국에서 타이어가 가장 싼 매장! 4짝 교체 시 휠얼라인먼트 무상 & 당일 장착 ⚡
         </span>
       </div>

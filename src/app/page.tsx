@@ -44,13 +44,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className="mt-8 md:mt-12">
-        <div className="w-full h-12 bg-gradient-to-r from-red-600 via-rose-500 to-purple-600 flex items-center justify-center overflow-hidden relative shadow-2xl border-y border-white/10 z-30 animate-gradient-x bg-[length:200%_200%]">
-          <span className="text-white font-black text-sm lg:text-base tracking-tight whitespace-nowrap shimmer-text">
-            ⚡ [타이어 최저가 선언] 대한민국에서 타이어가 가장 싼 매장! 4짝 교체 시 휠얼라인먼트 무상 & 당일 장착 ⚡
-          </span>
-        </div>
-      </div>
+
 
       <div className="mt-6 md:mt-10 pb-16 md:pb-0">
         <MonthlyBest />
